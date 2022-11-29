@@ -7,7 +7,6 @@ function Profile() {
   const history = useHistory();
   useEffect(() => {
     const { email } = JSON.parse(localStorage.getItem('user'));
-    console.log(email);
     setEmailStorage(email);
   }, []);
   return (
@@ -15,14 +14,30 @@ function Profile() {
       <Header profile>Profile</Header>
       <p data-testid="profile-email">{emailStorage}</p>
       <button
-        onClick={ () => history.push('/done-recipes') }
         type="button"
         data-testid="profile-done-btn"
+        onClick={ () => history.push('/done-recipes') }
       >
         Done Recipes
       </button>
-      <button type="button" data-testid="profile-favorite-btn">Favorite Recipes</button>
-      <button type="button" data-testid="profile-logout-btn">Logout</button>
+      <button
+        type="button"
+        data-testid="profile-favorite-btn"
+        onClick={ () => history.push('/favorite-recipes') }
+      >
+        Favorite Recipes
+      </button>
+      <button
+        type="button"
+        data-testid="profile-logout-btn"
+        onClick={ () => {
+          localStorage.clear();
+          history.push('/');
+        } }
+      >
+        Logout
+
+      </button>
     </div>
   );
 }

@@ -4,18 +4,23 @@ import App from '../App';
 
 import { renderWithRouterAndRedux } from './helpers/renderWith';
 
+const mockemail = 'josiel.jcc@hotmail.com';
+const dataIdEmailInput = 'email-input';
+const dataIdpassword = 'password-input';
+const dataIdloginbtn = 'login-submit-btn';
+const dataIdprofilebtn = 'profile-top-btn';
+
 describe('Testes do componente Profile', () => {
   test('verifica se os elementos estão na tela', () => {
     renderWithRouterAndRedux(<App />);
-    const mockemail = 'josiel.jcc@hotmail.com';
 
-    const emailInput = screen.getByTestId('email-input');
+    const emailInput = screen.getByTestId(dataIdEmailInput);
     userEvent.type(emailInput, mockemail);
-    const passwordInput = screen.getByTestId('password-input');
+    const passwordInput = screen.getByTestId(dataIdpassword);
     userEvent.type(passwordInput, '12345678');
-    const loginBtn = screen.getByTestId('login-submit-btn');
+    const loginBtn = screen.getByTestId(dataIdloginbtn);
     userEvent.click(loginBtn);
-    const profileBtn = screen.getByTestId('profile-top-btn');
+    const profileBtn = screen.getByTestId(dataIdprofilebtn);
     userEvent.click(profileBtn);
 
     const doneBtn = screen.getByTestId('profile-done-btn');
@@ -27,22 +32,58 @@ describe('Testes do componente Profile', () => {
     expect(favoriteBtn).toBeInTheDocument();
     expect(logoutBtn).toBeInTheDocument();
   });
-  test('verifica se ao clicar no search aparece o input para busca', () => {
-    renderWithRouterAndRedux(<App />);
-    const mockemail = 'josiel.jcc@hotmail.com';
 
-    const emailInput = screen.getByTestId('email-input');
+  test('verifica se ao clicar no botão done é redirecionado', () => {
+    renderWithRouterAndRedux(<App />);
+
+    const emailInput = screen.getByTestId(dataIdEmailInput);
     userEvent.type(emailInput, mockemail);
-    const passwordInput = screen.getByTestId('password-input');
+    const passwordInput = screen.getByTestId(dataIdpassword);
     userEvent.type(passwordInput, '12345678');
-    const loginBtn = screen.getByTestId('login-submit-btn');
+    const loginBtn = screen.getByTestId(dataIdloginbtn);
     userEvent.click(loginBtn);
-    const profileBtn = screen.getByTestId('profile-top-btn');
+    const profileBtn = screen.getByTestId(dataIdprofilebtn);
     userEvent.click(profileBtn);
 
     const doneBtn = screen.getByTestId('profile-done-btn');
     userEvent.click(doneBtn);
     const title = screen.getByTestId('page-title');
     expect(title).toHaveTextContent('Done Recipes');
+  });
+
+  test('verifica se ao clicar no botão favorite é redirecionado', () => {
+    renderWithRouterAndRedux(<App />);
+
+    const emailInput = screen.getByTestId(dataIdEmailInput);
+    userEvent.type(emailInput, mockemail);
+    const passwordInput = screen.getByTestId(dataIdpassword);
+    userEvent.type(passwordInput, '12345678');
+    const loginBtn = screen.getByTestId(dataIdloginbtn);
+    userEvent.click(loginBtn);
+    const profileBtn = screen.getByTestId(dataIdprofilebtn);
+    userEvent.click(profileBtn);
+
+    const favoriteBtn = screen.getByTestId('profile-favorite-btn');
+    userEvent.click(favoriteBtn);
+    const title = screen.getByTestId('page-title');
+    expect(title).toHaveTextContent('Favorite Recipes');
+  });
+
+  test('verifica se ao clicar no botão logout é redirecionado', () => {
+    renderWithRouterAndRedux(<App />);
+
+    const emailInput = screen.getByTestId(dataIdEmailInput);
+    userEvent.type(emailInput, mockemail);
+    const passwordInput = screen.getByTestId(dataIdpassword);
+    userEvent.type(passwordInput, '12345678');
+    const loginBtn = screen.getByTestId(dataIdloginbtn);
+    userEvent.click(loginBtn);
+    const profileBtn = screen.getByTestId(dataIdprofilebtn);
+    userEvent.click(profileBtn);
+
+    const favoriteBtn = screen.getByTestId('profile-logout-btn');
+    userEvent.click(favoriteBtn);
+    const emailInputAfter = screen.getByTestId(dataIdEmailInput);
+    expect(emailInputAfter).toBeInTheDocument();
   });
 });
