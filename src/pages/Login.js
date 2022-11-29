@@ -26,13 +26,11 @@ function Login() {
 
   const handleInput = ({ target: { value, name } }) => {
     setUser({ ...user, [name]: value });
-    const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+?$/i;
-    const minLen = 6;
-    if (regex.test(email) && password.length >= minLen) {
-      setDisable(false);
-    } else {
-      setDisable(true);
-    }
+  };
+
+  const handleClick = () => {
+    const saveInfo = { email };
+    localStorage.setItem('user', JSON.stringify(saveInfo));
   };
 
   return (
@@ -57,6 +55,7 @@ function Login() {
         data-testid="login-submit-btn"
         type="button"
         disabled={ disable }
+        onClick={ handleClick }
       >
         Enter
       </button>
