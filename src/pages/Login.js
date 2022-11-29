@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 
 const INITIAL_USER_STATE = {
@@ -5,7 +6,7 @@ const INITIAL_USER_STATE = {
   password: '',
 };
 
-function Login() {
+function Login({ history: { push } }) {
   const [user, setUser] = useState(INITIAL_USER_STATE);
   const [disable, setDisable] = useState(true);
 
@@ -31,6 +32,7 @@ function Login() {
   const handleClick = () => {
     const saveInfo = { email };
     localStorage.setItem('user', JSON.stringify(saveInfo));
+    push('/meals');
   };
 
   return (
@@ -62,5 +64,11 @@ function Login() {
     </div>
   );
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Login;
