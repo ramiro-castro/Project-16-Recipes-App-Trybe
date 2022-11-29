@@ -1,9 +1,7 @@
-const INITIAL_STATE = {
-  user: '',
-};
+// const INITIAL_STATE = {
+//   user: '',
+// };
 
-const userReducer = (state = INITIAL_STATE, action) => {
-  return state;
-};
+// const userReducer = (state = INITIAL_STATE, action) => state;
 
-export default userReducer;
+// export default userReducer;
