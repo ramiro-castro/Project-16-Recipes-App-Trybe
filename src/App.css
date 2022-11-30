@@ -5,9 +5,9 @@
   display: flex;
   flex-direction: column;
   font-family: sans-serif;
-  height: 100vh;
-  justify-content: center;
+  min-height: 100vh;
   width: 100%;
+  padding: 1rem;
 }
 
 .rocksGlass {
@@ -32,13 +32,12 @@
 .meals > .logo {
   animation: shake 1.5s infinite ease;
   color: aliceblue;
-  font-family: Montserrat , sans-serif;
+  font-family: Montserrat, sans-serif;
   font-size: 3em;
   font-weight: 900;
 }
 
 @keyframes shake {
-
   0% {
     transform: rotate(5deg);
   }
@@ -53,7 +52,6 @@
 }
 
 @keyframes clink {
-
   0% {
     transform: rotate(-10deg);
   }
