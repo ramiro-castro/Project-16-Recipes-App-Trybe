@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import SearchBar from './SearchBar';
@@ -22,12 +23,21 @@ function Header({
 
   const { input, option } = searchOptions;
 
+  const history = useHistory();
   return (
     <div className="header">
       {profile && (
-        <Link to="/profile">
-          <img data-testid="profile-top-btn" src={ profileIcon } alt="icone de profile" />
-        </Link>
+        <button
+          type="button"
+          onClick={ () => history.push('/profile') }
+        >
+          <img
+            data-testid="profile-top-btn"
+            src={ profileIcon }
+            alt="icone de profile"
+          />
+
+        </button>
       )}
       {search && (
         <button onClick={ () => setisSearch((prev) => !prev) } type="button">
