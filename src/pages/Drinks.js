@@ -1,11 +1,16 @@
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
-function Drinks() {
+function Drinks({ history }) {
   return (
     <div>
-      <Header profile search>Drinks</Header>
+      <Header history={ history } profile search>Drinks</Header>
     </div>
   );
 }
+
+Drinks.propTypes = {
+  history: PropTypes.objectOf(Object).isRequired,
+};
 
 export default Drinks;
