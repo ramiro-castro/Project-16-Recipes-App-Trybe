@@ -1,22 +1,40 @@
-import { firstLetterFoodApi,
-  ingredientFoodApi, nameFoodApi } from '../services/requestApi';
+import {
+  firstLetterDrinkApi,
+  firstLetterFoodApi,
+  ingredientDrinkApi,
+  ingredientFoodApi,
+  nameDrinkApi,
+  nameFoodApi,
+} from '../services/requestApi';
 
-function SearchBar({ input, option, handleFilters }) {
+function SearchBar({ input, option, handleFilters, pathname, push }) {
+//   console.log(pathname);
+
   const handleSearch = async () => {
+    let ing = [];
     if (option === 'Ingredient') {
-      const ing = await ingredientFoodApi(input);
-      console.log(ing);
+      ing = pathname === '/meals'
+        ? await ingredientFoodApi(input) : await ingredientDrinkApi(input);
+      console.log(ing.meals[0].idMeal);
     }
     if (option === 'Name') {
-      const foo = await nameFoodApi(input);
-      console.log(foo);
+      ing = pathname === '/meals'
+        ? await nameFoodApi(input) : await nameDrinkApi(input);
     }
     if (option === 'First letter') {
       if (input.length > 1) {
         return global.alert('Your search must have only 1 (one) character');
       }
-      const first = await firstLetterFoodApi(input);
-      console.log(first);
+      ing = pathname === '/meals'
+        ? await firstLetterFoodApi(input) : await firstLetterDrinkApi(input);
+    }
+    // console.log(ing[0]);
+    if (ing.length === 1 && pathname === '/meals') {
+    //   ing[0].idMeal;
+      return push(`/meals/${ing.meals[0].idMeal}`);
+    }
+    if (ing.length === 1 && pathname === '/drinks') {
+      return push(`/drinks/${ing.drinks[0].idDrink}`);
     }
   };
 
