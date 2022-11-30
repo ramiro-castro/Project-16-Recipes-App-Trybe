@@ -1,11 +1,12 @@
+import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 function Drinks() {
   return (
-    <main>
-      <h1>Drinks</h1>
+    <div>
+      <Header profile search>Drinks</Header>
       <Footer />
-    </main>
+    </div>
   );
 }
 

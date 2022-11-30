@@ -1,23 +1,26 @@
 import { Route, Switch } from 'react-router-dom';
-import Login from './pages/Login';
+import DoneRecipes from './pages/DoneRecipes';
 import Drinks from './pages/Drinks';
+import FavoriteRecipes from './pages/FavoriteRecipes';
+import Login from './pages/Login';
 import Meals from './pages/Meals';
 import Profile from './pages/Profile';
-// import MealCard from './pages/MealCard';
-// import Done from './pages/Done';
-// import Favorites from './pages/Favorites';
+import RecipeDetails from './pages/RecipeDetails';
 
 function Routes() {
   return (
     <Switch>
       <Route exact path="/" component={ Login } />
-      <Route path="/meals" component={ Meals } />
-      <Route path="/drinks" component={ Drinks } />
-      <Route path="/profile" component={ Profile } />
-      {/* <Route path="/meals/:id-da-receita" component={ MealCard } />
-      <Route path="/drinks/:id-da-receita" component={ DrinksCard } />
-      <Route path="/done-recipes" component={ Done } />
-      <Route path="/favorite-recipes" component={ Favorites } /> */}
+      <Route exact path="/drinks" component={ Drinks } />
+      <Route exact path="/meals" component={ Meals } />
+      <Route path="/meals/:id" component={ RecipeDetails } />
+      <Route path="/drinks/:id" component={ RecipeDetails } />
+      <Route path="/meals/:id/in-progress" component={ Login } />
+      <Route exact path="/drinks/:id/in-progress" component={ Login } />
+      <Route exact path="/profile" component={ Profile } />
+      <Route exact path="/done-recipes" component={ DoneRecipes } />
+      <Route exact path="/favorite-recipes" component={ FavoriteRecipes } />
+
     </Switch>
   );
 }
