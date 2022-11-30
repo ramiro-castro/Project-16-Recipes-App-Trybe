@@ -14,7 +14,7 @@ function Header({
   search, profile, children }) {
   const [isSearch, setisSearch] = useState(false);
   const [searchOptions, setSearchOptions] = useState(foodSearch);
-  console.log(children);
+  // console.log(children);
 
   const handleFilters = ({ target: { value, name } }) => {
     setSearchOptions({ ...searchOptions, [name]: value });
