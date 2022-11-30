@@ -9,8 +9,10 @@ describe('testes do componente Footer', () => {
   test('testa se os botões estão presentes na tela', () => {
     renderWithRouterAndRedux(<Drinks />);
 
-    const buttons = screen.getAllByRole('button');
-    expect(buttons.length).toEqual(2);
+    const buttons = screen.getByTestId('meals-bottom-btn');
+    const buttons1 = screen.getByTestId('drinks-bottom-btn');
+    expect(buttons).toBeInTheDocument();
+    expect(buttons1).toBeInTheDocument();
   });
   test('testa a funcionalidade do botão Meal', () => {
     const { history } = renderWithRouterAndRedux(<Drinks />);
