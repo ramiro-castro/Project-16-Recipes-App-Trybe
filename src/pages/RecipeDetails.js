@@ -1,6 +1,8 @@
 // import { useEffect } from 'react';
 import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
+import Footer from '../components/Footer';
+
 
 function RecipeDetails() {
   const history = useHistory();
@@ -59,6 +61,8 @@ function RecipeDetails() {
           <p data-testid="instructions">{recipe.strInstructions}</p>
         </div>
       )}
+
+      <Footer />
     </div>
   );
 }
