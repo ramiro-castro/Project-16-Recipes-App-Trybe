@@ -1,3 +1,5 @@
+import { useDispatch } from 'react-redux';
+import { saveRecipes } from '../redux/actions/recipesActions';
 import {
   firstLetterDrinkApi,
   firstLetterFoodApi,
@@ -8,31 +10,58 @@ import {
 } from '../services/requestApi';
 
 function SearchBar({ input, option, handleFilters, pathname, push }) {
-//   console.log(pathname);
+  const dispatch = useDispatch();
 
   const handleSearch = async () => {
     let ing = [];
-    if (option === 'Ingredient') {
+    switch (option) {
+    case 'Ingredient':
       ing = pathname === '/meals'
         ? await ingredientFoodApi(input) : await ingredientDrinkApi(input);
-      console.log(ing);
-      // push(`/meals/${ing.meals[0].idMeal}`);
-    }
-    if (option === 'Name') {
+      break;
+    case 'Name':
       ing = pathname === '/meals'
         ? await nameFoodApi(input) : await nameDrinkApi(input);
-    }
-    if (option === 'First letter') {
+      break;
+    case 'First letter':
       if (input.length > 1) {
         return global.alert('Your search must have only 1 (one) character');
       }
       ing = pathname === '/meals'
         ? await firstLetterFoodApi(input) : await firstLetterDrinkApi(input);
+      break;
+    default:
+      break;
     }
-    const auxIng = ing.meals || ing.drinks;
+
+    // if (option === 'Ingredient') {
+    //   ing = pathname === '/meals'
+    //     ? await ingredientFoodApi(input) : await ingredientDrinkApi(input);
+    //   // console.log(ing);
+    //   // push(`/meals/${ing.meals[0].idMeal}`);
+    // }
+    // if (option === 'Name') {
+    //   ing = pathname === '/meals'
+    //     ? await nameFoodApi(input) : await nameDrinkApi(input);
+    // }
+    // if (option === 'First letter') {
+    //   if (input.length > 1) {
+    //     return global.alert('Your search must have only 1 (one) character');
+    //   }
+    //   ing = pathname === '/meals'
+    //     ? await firstLetterFoodApi(input) : await firstLetterDrinkApi(input);
+    // }
+
+    const auxIng = ing.meals || ing.drinks || [];
     if (auxIng.length === 1) {
       return pathname === '/meals'
         ? push(`/meals/${auxIng[0].idMeal}`) : push(`/drinks/${auxIng[0].idDrink}`);
+    }
+
+    if (auxIng.length === 0) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    } else {
+      dispatch(saveRecipes(auxIng));
     }
   };
 
