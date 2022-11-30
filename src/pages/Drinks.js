@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import RecipeCard from '../components/RecipeCard';
+import Recipes from '../components/Recipes';
 
 function Drinks() {
   const recipes = useSelector((state) => state.recipesReducer.recipes);
@@ -16,6 +17,7 @@ function Drinks() {
     <div>
       <Header profile search>Drinks</Header>
       <RecipeCard recipes={ recipes } />
+      <Recipes />
       <Footer />
     </div>
   );
