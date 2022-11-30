@@ -1,16 +1,25 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 
 function Header({ search, profile, children }) {
   const [isSearch, setisSearch] = useState(false);
+  const history = useHistory();
   return (
     <div className="header">
       {profile && (
-        <Link to="/profile">
-          <img data-testid="profile-top-btn" src={ profileIcon } alt="icone de profile" />
-        </Link>
+        <button
+          type="button"
+          onClick={ () => history.push('/profile') }
+        >
+          <img
+            data-testid="profile-top-btn"
+            src={ profileIcon }
+            alt="icone de profile"
+          />
+
+        </button>
       )}
       {search && (
         <button onClick={ () => setisSearch((prev) => !prev) } type="button">

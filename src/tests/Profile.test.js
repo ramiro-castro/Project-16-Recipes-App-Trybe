@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
+import Profile from '../pages/Profile';
 
 import { renderWithRouterAndRedux } from './helpers/renderWith';
 
@@ -85,5 +86,11 @@ describe('Testes do componente Profile', () => {
     userEvent.click(favoriteBtn);
     const emailInputAfter = screen.getByTestId(dataIdEmailInput);
     expect(emailInputAfter).toBeInTheDocument();
+  });
+
+  test('verifica o profile sem nada no localstorage', () => {
+    renderWithRouterAndRedux(<Profile />);
+    const profileEmail = screen.getByTestId('profile-email');
+    expect(profileEmail).toHaveTextContent('');
   });
 });
