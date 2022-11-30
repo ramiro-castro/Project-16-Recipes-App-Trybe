@@ -1,5 +1,4 @@
 import { useState } from 'react';
-// import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
@@ -12,7 +11,7 @@ const foodSearch = {
 };
 
 function Header({
-  search, profile, children, history: { push, location: { pathname } } }) {
+  search, profile, children }) {
   const [isSearch, setisSearch] = useState(false);
   const [searchOptions, setSearchOptions] = useState(foodSearch);
   console.log(children);
@@ -24,6 +23,7 @@ function Header({
   const { input, option } = searchOptions;
 
   const history = useHistory();
+  // console.log(history);
   return (
     <div className="header">
       {profile && (
@@ -58,9 +58,9 @@ function Header({
             />
           </label>
           <SearchBar
-            push={ push }
+            push={ history.push }
             input={ input }
-            pathname={ pathname }
+            pathname={ history.location.pathname }
             option={ option }
             handleFilters={ handleFilters }
           />
@@ -73,7 +73,6 @@ function Header({
 }
 
 Header.propTypes = {
-  history: PropTypes.objectOf(Object),
   search: PropTypes.bool,
   profile: PropTypes.bool,
   children: PropTypes.string,

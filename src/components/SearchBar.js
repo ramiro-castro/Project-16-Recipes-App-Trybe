@@ -15,7 +15,8 @@ function SearchBar({ input, option, handleFilters, pathname, push }) {
     if (option === 'Ingredient') {
       ing = pathname === '/meals'
         ? await ingredientFoodApi(input) : await ingredientDrinkApi(input);
-      console.log(ing.meals[0].idMeal);
+      console.log(ing);
+      // push(`/meals/${ing.meals[0].idMeal}`);
     }
     if (option === 'Name') {
       ing = pathname === '/meals'
@@ -28,13 +29,10 @@ function SearchBar({ input, option, handleFilters, pathname, push }) {
       ing = pathname === '/meals'
         ? await firstLetterFoodApi(input) : await firstLetterDrinkApi(input);
     }
-    // console.log(ing[0]);
-    if (ing.length === 1 && pathname === '/meals') {
-    //   ing[0].idMeal;
-      return push(`/meals/${ing.meals[0].idMeal}`);
-    }
-    if (ing.length === 1 && pathname === '/drinks') {
-      return push(`/drinks/${ing.drinks[0].idDrink}`);
+    const auxIng = ing.meals || ing.drinks;
+    if (auxIng.length === 1) {
+      return pathname === '/meals'
+        ? push(`/meals/${auxIng[0].idMeal}`) : push(`/drinks/${auxIng[0].idDrink}`);
     }
   };
 
