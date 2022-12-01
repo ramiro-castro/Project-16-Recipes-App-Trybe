@@ -1,0 +1,9 @@
+.recipeImg {
+  height: 160px;
+  width: 236px;
+}
+.card{
+  box-shadow: 0 8px 8px -4px green;
+  height: 200px;
+  width: 236px;
+}
