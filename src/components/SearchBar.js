@@ -34,24 +34,6 @@ function SearchBar({ input, option, handleFilters, pathname, push }) {
       break;
     }
 
-    // if (option === 'Ingredient') {
-    //   ing = pathname === '/meals'
-    //     ? await ingredientFoodApi(input) : await ingredientDrinkApi(input);
-    //   // console.log(ing);
-    //   // push(`/meals/${ing.meals[0].idMeal}`);
-    // }
-    // if (option === 'Name') {
-    //   ing = pathname === '/meals'
-    //     ? await nameFoodApi(input) : await nameDrinkApi(input);
-    // }
-    // if (option === 'First letter') {
-    //   if (input.length > 1) {
-    //     return global.alert('Your search must have only 1 (one) character');
-    //   }
-    //   ing = pathname === '/meals'
-    //     ? await firstLetterFoodApi(input) : await firstLetterDrinkApi(input);
-    // }
-
     const auxIng = ing.meals || ing.drinks || [];
     if (auxIng.length === 1) {
       return pathname === '/meals'
