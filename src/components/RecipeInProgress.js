@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import './RecipeInProgress.css';
 
 function RecipeInProgress() {
   const history = useHistory();
   const match = useRouteMatch();
-  const [recipe, setRecipe] = useState();
+  const [recipe, setRecipe] = useState([]);
   const [category, setCategory] = useState('');
+  const [checked, setChecked] = useState([]);
+  const [filterIngredients, setFilterIngredients] = useState([]);
 
   useEffect(() => {
     if (history.location.pathname.includes('meals')) {
@@ -25,7 +28,12 @@ function RecipeInProgress() {
     }
   }, []);
 
-  const getVideoId = () => recipe.strYoutube.split('v=')[1];
+  const getVideoId = () => {
+    if (recipe.length !== 0) {
+      return recipe.strYoutube.split('v=')[1];
+    }
+  };
+
   const getIngredients = () => (Object.entries(recipe)
     .filter((key) => key[0].includes('strIngredient'))
     .map((ingredient) => ingredient[1]));
@@ -33,15 +41,32 @@ function RecipeInProgress() {
   const getMeasures = () => Object.entries(recipe)
     .filter((key) => key[0].includes('strMeasure')).map((ingredient) => ingredient[1]);
 
-  let ingred = [];
-  let indexNull = 0;
+  const removeNull = () => {
+    if (recipe.length !== 0) {
+      const allIngredients = getIngredients();
+      console.log(allIngredients);
+      const indexNull = allIngredients.indexOf('');
+      const createArr = allIngredients.slice(0, indexNull).map(() => false);
+      console.log(createArr);
+      setChecked(createArr);
+      setFilterIngredients(allIngredients.slice(0, indexNull));
+    }
+  };
 
-  if (recipe !== undefined) {
-    ingred = getIngredients();
-    console.log(ingred);
-    console.log(ingred.indexOf(''));
-    indexNull = ingred.indexOf('');
-  }
+  useEffect(() => {
+    removeNull();
+  }, [recipe]);
+
+  // https://www.freecodecamp.org/news/how-to-work-with-multiple-checkboxes-in-react/
+
+  const handleFilters = (position) => {
+    console.log(checked);
+    console.log(position);
+    const updatedCheckedState = checked
+      .map((item, index) => (index === position ? !item : item));
+    setChecked(updatedCheckedState);
+    console.log(updatedCheckedState);
+  };
 
   return (
     <div>
@@ -69,10 +94,21 @@ function RecipeInProgress() {
             src={ recipe[`str${category}Thumb`] }
             alt=""
           />
-          {ingred.slice(0, indexNull).map((ingredient, index) => (
+          {filterIngredients.map((ingredient, index) => (
             <div key={ index }>
-              <label htmlFor="recepi" data-testid={ `${index}-ingredient-step` }>
-                <input type="checkbox" />
+              <label
+                htmlFor={ `${index}-ingredient-step` }
+                className={ checked[index] ? 'decoration' : '' }
+                data-testid={ `${index}-ingredient-step` }
+              >
+                <input
+                  type="checkbox"
+                  id={ `${index}-ingredient-step` }
+                  name={ ingredient }
+                  value={ ingredient }
+                  checked={ checked[index] }
+                  onChange={ () => handleFilters(index) }
+                />
                 {`${ingredient} ${getMeasures()[index]}`}
               </label>
             </div>
