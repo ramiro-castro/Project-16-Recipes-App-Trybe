@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './Recipe.css';
+
+const five = 5;
+const twelve = 12;
 
 function Recipes({ history: { push, location: { pathname } } }) {
   const location = useLocation();
@@ -53,12 +57,11 @@ function Recipes({ history: { push, location: { pathname } } }) {
   };
 
   if (path === '/drinks') {
-    console.log(drinksData)
     return (
       <main className="mainRecipes">
         <h1>receitas de drinks</h1>
         <nav>
-          {drinkCategories.map((drink, index) => index < 5 && (
+          {drinkCategories.map((drink, index) => index < five && (
             <button
               data-testid={ `${drink.strCategory}-category-filter` }
               type="button"
@@ -69,8 +72,12 @@ function Recipes({ history: { push, location: { pathname } } }) {
             </button>))}
         </nav>
         <section className="sectionRecipes">
-          {drinksData.map((drinks, index) => index < 12 && (
-            <button key={ index } onClick={ () => handleRecipeClick(drinks.idDrink) }>
+          {drinksData.map((drinks, index) => index < twelve && (
+            <button
+              type="button"
+              key={ index }
+              onClick={ () => handleRecipeClick(drinks.idDrink) }
+            >
               <div className="card" data-testid={ `${index}-recipe-card` }>
                 <img
                   className="recipeImg"
@@ -92,12 +99,11 @@ function Recipes({ history: { push, location: { pathname } } }) {
       </main>
     );
   }
-  console.log(mealData);
   return (
     <main>
       <h1>receitas de meals</h1>
       <nav>
-        {mealCategories.map((meal, index) => index < 5 && (
+        {mealCategories.map((meal, index) => index < five && (
           <button
             data-testid={ `${meal.strCategory}-category-filter` }
             type="button"
@@ -108,8 +114,12 @@ function Recipes({ history: { push, location: { pathname } } }) {
           </button>))}
       </nav>
       <section className="sectionRecipes">
-        {mealData.map((meal, index) => index < 12 && (
-          <button type="button" key={ index } onClick={ () => handleRecipeClick(meal.idMeal) }>
+        {mealData.map((meal, index) => index < twelve && (
+          <button
+            type="button"
+            key={ index }
+            onClick={ () => handleRecipeClick(meal.idMeal) }
+          >
             <div className="card" data-testid={ `${index}-recipe-card` }>
               <img
                 className="recipeImg"
@@ -131,5 +141,14 @@ function Recipes({ history: { push, location: { pathname } } }) {
     </main>
   );
 }
+
+Recipes.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    location: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default Recipes;
