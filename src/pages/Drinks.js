@@ -13,12 +13,17 @@ function Drinks({ history }) {
   useEffect(() => {
 
   }, [recipes]);
-
+  const validation = () => recipes.length !== 0;
   return (
     <div>
       <Header profile search>Drinks</Header>
-      <RecipeCard recipes={ recipes } />
-      <Recipes history={ history } />
+      {validation()
+        ? (
+          <RecipeCard recipes={ recipes } />
+        )
+        : (
+          <Recipes history={ history } />
+        )}
       <Footer />
     </div>
   );

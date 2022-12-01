@@ -14,11 +14,19 @@ function Meals({ history }) {
 
   }, [recipes]);
 
+  const validation = () => recipes.length !== 0;
+  // console.log(validation());
+
   return (
     <div>
       <Header profile search>Meals</Header>
-      <RecipeCard recipes={ recipes } />
-      <Recipes history={ history } />
+      {validation()
+        ? (
+          <RecipeCard recipes={ recipes } />
+        )
+        : (
+          <Recipes history={ history } />
+        )}
       <Footer />
     </div>
   );
