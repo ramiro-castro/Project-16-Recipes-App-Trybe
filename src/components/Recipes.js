@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './Recipe.css';
 
-function Recipes() {
+function Recipes({ history: { push, location: { pathname } } }) {
   const location = useLocation();
   const [path] = useState(location.pathname);
   const [mealData, setMealData] = useState([]);
@@ -45,7 +45,15 @@ function Recipes() {
     mealCategory();
   }, []);
 
+  const handleRecipeClick = (id) => {
+    if (pathname === '/meals') {
+      return push(`/meals/${id}`);
+    }
+    return push(`/drinks/${id}`);
+  };
+
   if (path === '/drinks') {
+    console.log(drinksData)
     return (
       <main className="mainRecipes">
         <h1>receitas de drinks</h1>
@@ -62,26 +70,29 @@ function Recipes() {
         </nav>
         <section className="sectionRecipes">
           {drinksData.map((drinks, index) => index < 12 && (
-            <div key={ index } className="card" data-testid={ `${index}-recipe-card` }>
-              <img
-                className="recipeImg"
-                src={ drinks.strDrinkThumb }
-                alt={ drinks.strDrink }
-                data-testid={ `${index}-card-img` }
-              />
-              <h3
-                className="recipeName"
-                data-testid={ `${index}-card-name` }
-              >
-                {drinks.strDrink}
+            <button key={ index } onClick={ () => handleRecipeClick(drinks.idDrink) }>
+              <div className="card" data-testid={ `${index}-recipe-card` }>
+                <img
+                  className="recipeImg"
+                  src={ drinks.strDrinkThumb }
+                  alt={ drinks.strDrink }
+                  data-testid={ `${index}-card-img` }
+                />
+                <h3
+                  className="recipeName"
+                  data-testid={ `${index}-card-name` }
+                >
+                  {drinks.strDrink}
 
-              </h3>
-            </div>
+                </h3>
+              </div>
+            </button>
           ))}
         </section>
       </main>
     );
   }
+  console.log(mealData);
   return (
     <main>
       <h1>receitas de meals</h1>
@@ -98,21 +109,23 @@ function Recipes() {
       </nav>
       <section className="sectionRecipes">
         {mealData.map((meal, index) => index < 12 && (
-          <div key={ index } className="card" data-testid={ `${index}-recipe-card` }>
-            <img
-              className="recipeImg"
-              src={ meal.strMealThumb }
-              alt={ meal.strMeal }
-              data-testid={ `${index}-card-img` }
-            />
-            <h3
-              className="recipeName"
-              data-testid={ `${index}-card-name` }
-            >
-              {meal.strMeal}
+          <button type="button" key={ index } onClick={ () => handleRecipeClick(meal.idMeal) }>
+            <div className="card" data-testid={ `${index}-recipe-card` }>
+              <img
+                className="recipeImg"
+                src={ meal.strMealThumb }
+                alt={ meal.strMeal }
+                data-testid={ `${index}-card-img` }
+              />
+              <h3
+                className="recipeName"
+                data-testid={ `${index}-card-name` }
+              >
+                {meal.strMeal}
 
-            </h3>
-          </div>
+              </h3>
+            </div>
+          </button>
         ))}
       </section>
     </main>
