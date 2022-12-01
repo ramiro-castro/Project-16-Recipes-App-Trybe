@@ -1,6 +1,7 @@
 // import { useEffect } from 'react';
 import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
+import Carrousel from '../components/Carrousel';
 import Footer from '../components/Footer';
 
 function RecipeDetails() {
@@ -8,7 +9,7 @@ function RecipeDetails() {
   const match = useRouteMatch();
   const [recipe, setRecipe] = useState();
   const [category, setCategory] = useState('');
-  const [recomendations, setRecomendations] = useState([]);
+  const [recomendations, setRecomendations] = useState();
 
   useEffect(() => {
     if (history.location.pathname.includes('meals')) {
@@ -21,7 +22,7 @@ function RecipeDetails() {
       fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=')
         .then((res) => res.json())
         .then((data) => {
-          setRecomendations(data.meals);
+          setRecomendations(data.drinks);
         });
     } else {
       fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${match.params.id}`)
@@ -30,11 +31,11 @@ function RecipeDetails() {
       setCategory('Drink');
       fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=')
         .then((res) => res.json())
-        .then((data) => setRecomendations(data.drinks));
+        .then((data) => setRecomendations(data.meals));
       setCategory('Drink');
     }
   }, []);
-  console.log(recomendations);
+
   const getVideoId = () => recipe.strYoutube.split('v=')[1];
   const getIngredients = () => Object.entries(recipe)
     .filter((key) => key[0].includes('strIngredient')).map((ingredient) => ingredient[1]);
@@ -59,6 +60,10 @@ function RecipeDetails() {
             data-testid="video"
             src={ `https://www.youtube.com/embed/${getVideoId()}` }
             title="recipe video"
+          />}
+          {recomendations && <Carrousel
+            category={ category }
+            recomendations={ recomendations }
           />}
           {getIngredients().map((ingredient, index) => (
             <div key={ index }>
