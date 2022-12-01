@@ -23,4 +23,8 @@ function Meals() {
   );
 }
 
+Meals.propTypes = {
+  history: PropTypes.shape({}).isRequired,
+};
+
 export default Meals;
