@@ -6,7 +6,7 @@ import Header from '../components/Header';
 import RecipeCard from '../components/RecipeCard';
 import Recipes from '../components/Recipes';
 
-function Drinks() {
+function Drinks({ history }) {
   const recipes = useSelector((state) => state.recipesReducer.recipes);
   // console.log(recipes);
 
@@ -18,7 +18,7 @@ function Drinks() {
     <div>
       <Header profile search>Drinks</Header>
       <RecipeCard recipes={ recipes } />
-      <Recipes />
+      <Recipes history={ history } />
       <Footer />
     </div>
   );
