@@ -2,11 +2,11 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Recipes from '../components/Recipes';
 
-function Drinks() {
+function Drinks({ history }) {
   return (
     <div>
       <Header profile search>Drinks</Header>
-      <Recipes />
+      <Recipes history={ history } />
       <Footer />
     </div>
   );
