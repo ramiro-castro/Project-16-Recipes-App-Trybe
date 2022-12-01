@@ -8,6 +8,7 @@ function RecipeDetails() {
   const match = useRouteMatch();
   const [recipe, setRecipe] = useState();
   const [category, setCategory] = useState('');
+  const [recomendations, setRecomendations] = useState([]);
 
   useEffect(() => {
     if (history.location.pathname.includes('meals')) {
@@ -15,16 +16,25 @@ function RecipeDetails() {
         .then((res) => res.json())
         .then((data) => {
           setRecipe(data.meals[0]);
-          setCategory('Meal');
+        });
+      setCategory('Meal');
+      fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=')
+        .then((res) => res.json())
+        .then((data) => {
+          setRecomendations(data.meals);
         });
     } else {
       fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${match.params.id}`)
         .then((res) => res.json())
         .then((data) => setRecipe(data.drinks[0]));
       setCategory('Drink');
+      fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=')
+        .then((res) => res.json())
+        .then((data) => setRecomendations(data.drinks));
+      setCategory('Drink');
     }
   }, []);
-
+  console.log(recomendations);
   const getVideoId = () => recipe.strYoutube.split('v=')[1];
   const getIngredients = () => Object.entries(recipe)
     .filter((key) => key[0].includes('strIngredient')).map((ingredient) => ingredient[1]);
