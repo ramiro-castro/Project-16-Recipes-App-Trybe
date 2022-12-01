@@ -3,6 +3,7 @@
   background: #0fa36b;
   color: #464646;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   font-family: sans-serif;
   min-height: 100vh;
