@@ -1,0 +1,17 @@
+.carousel-item {
+  margin-right: 0;
+}
+
+.carousel-inner {
+  display: flex;
+}
+
+.carousel-inner .active + .carousel-item {
+  display: block;
+}
+
+.start-btn {
+  bottom: 0;
+  padding: 2px;
+  position: fixed;
+}

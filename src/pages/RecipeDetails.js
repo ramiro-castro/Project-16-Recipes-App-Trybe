@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import Footer from '../components/Footer';
+import Carrousel from '../components/Carrousel';
 
 function RecipeDetails() {
   const history = useHistory();
   const match = useRouteMatch();
   const [recipe, setRecipe] = useState();
   const [category, setCategory] = useState('');
+  const [recomendations, setRecomendations] = useState();
 
   useEffect(() => {
     if (history.location.pathname.includes('meals')) {
@@ -14,12 +15,21 @@ function RecipeDetails() {
         .then((res) => res.json())
         .then((data) => {
           setRecipe(data.meals[0]);
-          setCategory('Meal');
+        });
+      setCategory('Meal');
+      fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=')
+        .then((res) => res.json())
+        .then((data) => {
+          setRecomendations(data.drinks);
         });
     } else {
       fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${match.params.id}`)
         .then((res) => res.json())
         .then((data) => setRecipe(data.drinks[0]));
+      setCategory('Drink');
+      fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=')
+        .then((res) => res.json())
+        .then((data) => setRecomendations(data.meals));
       setCategory('Drink');
     }
   }, []);
@@ -49,6 +59,10 @@ function RecipeDetails() {
             src={ `https://www.youtube.com/embed/${getVideoId()}` }
             title="recipe video"
           />}
+          {recomendations && <Carrousel
+            category={ category }
+            recomendations={ recomendations }
+          />}
           {getIngredients().map((ingredient, index) => (
             <div key={ index }>
               <p data-testid={ `${index}-ingredient-name-and-measure` }>
@@ -57,10 +71,15 @@ function RecipeDetails() {
             </div>
           ))}
           <p data-testid="instructions">{recipe.strInstructions}</p>
+          <button
+            className="start-btn"
+            type="button"
+            data-testid="start-recipe-btn"
+          >
+            Start Recipe
+          </button>
         </div>
       )}
-
-      <Footer />
     </div>
   );
 }
