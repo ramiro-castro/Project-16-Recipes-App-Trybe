@@ -29,15 +29,7 @@ describe('Testa o componente RecipeDetails', () => {
     const recomendation = await screen.findByTestId('0-recommendation-card');
     expect(recomendation).toBeInTheDocument();
   });
-  // it('Testa a existencia da rota /drinks', () => {
-
-  // });
-
-  // it('Testa uma busca na rota /meals', async () => {
-
-  // });
-
-  // it('Testa uma busca na rota /drink', async () => {
+  // it('Testa a existencia da rota /drinks/11007', () => {
 
   // });
 });
