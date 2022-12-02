@@ -11,6 +11,7 @@ function RecipeInProgress() {
   const [category, setCategory] = useState('');
   const [checked, setChecked] = useState([]);
   const [filterIngredients, setFilterIngredients] = useState([]);
+  const [btnDisable, setBtnDisable] = useState(true);
 
   useEffect(() => {
     if (history.location.pathname.includes('meals')) {
@@ -66,6 +67,11 @@ function RecipeInProgress() {
       .map((item, index) => (index === position ? !item : item));
     setChecked(updatedCheckedState);
     console.log(updatedCheckedState);
+    const verifyBtn = updatedCheckedState.every((el) => el === true);
+    console.log(verifyBtn);
+    const teste = verifyBtn === false;
+    setBtnDisable(teste);
+    console.log(btnDisable);
   };
 
   return (
@@ -122,6 +128,7 @@ function RecipeInProgress() {
           <button
             data-testid="finish-recipe-btn"
             type="button"
+            disabled={ btnDisable }
           >
             Finalizar
           </button>
