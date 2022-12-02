@@ -35,6 +35,8 @@ function RecipeInProgress() {
     }
   };
 
+  console.log(recipe);
+
   const getIngredients = () => (Object.entries(recipe)
     .filter((key) => key[0].includes('strIngredient'))
     .map((ingredient) => ingredient[1]));
@@ -47,7 +49,15 @@ function RecipeInProgress() {
       const allIngredients = getIngredients();
       console.log(allIngredients);
       const indexNull = allIngredients.indexOf('');
-      const createArr = allIngredients.slice(0, indexNull).map(() => false);
+
+      const getItem = JSON.parse(localStorage.getItem('inProgressRecipes')) || [];
+      console.log(getItem);
+      let createArr = [];
+      if (getItem.length !== 0) {
+        createArr = getItem;
+      } else {
+        createArr = allIngredients.slice(0, indexNull).map(() => false);
+      }
       console.log(createArr);
       setChecked(createArr);
       setFilterIngredients(allIngredients.slice(0, indexNull));
@@ -69,10 +79,22 @@ function RecipeInProgress() {
     console.log(updatedCheckedState);
     const verifyBtn = updatedCheckedState.every((el) => el === true);
     console.log(verifyBtn);
+    localStorage.setItem('inProgressRecipes', JSON.stringify(updatedCheckedState));
     const teste = verifyBtn === false;
     setBtnDisable(teste);
     console.log(btnDisable);
   };
+
+  // const handleClick = () => {
+  //   localStorage.setItem('doneRecipes', JSON.stringify(recipe));
+  //   history.push('/done-recipes');
+  // };
+
+  // useEffect(() => {
+  //   if (checked) {
+  //     localStorage.setItem('inProgressRecipes', JSON.stringify(checked));
+  //   }
+  // }, [checked]);
 
   return (
     <div>
@@ -129,6 +151,7 @@ function RecipeInProgress() {
             data-testid="finish-recipe-btn"
             type="button"
             disabled={ btnDisable }
+            // onClick={ handleClick }
           >
             Finalizar
           </button>
