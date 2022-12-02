@@ -8,6 +8,22 @@ function RecipeDetails() {
   const [recipe, setRecipe] = useState();
   const [category, setCategory] = useState('');
   const [recomendations, setRecomendations] = useState();
+  const [doneRecipes, setDoneRecipes] = useState([]);
+  const [inProgressRecipes, setInprogressRecipes] = useState();
+
+  const getDoneRecipes = () => {
+    const data = localStorage.getItem('doneRecipes') || [];
+    if (data.length) {
+      setDoneRecipes(JSON.parse(data));
+    }
+  };
+
+  const getInProgressReipes = () => {
+    const data = localStorage.getItem('inProgressRecipes') || [];
+    if (data.length) {
+      setInprogressRecipes(JSON.parse(data));
+    }
+  };
 
   useEffect(() => {
     if (history.location.pathname.includes('meals')) {
@@ -32,8 +48,39 @@ function RecipeDetails() {
         .then((data) => setRecomendations(data.meals));
       setCategory('Drink');
     }
+    getDoneRecipes();
+    getInProgressReipes();
+    // const inProgressRecipes = {
+    //   meals: {
+    //     52771: [],
+    //   },
+    // };
+    // localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+    // localStorage.setItem('doneRecipes', JSON.stringify([{
+    //   id: '52771',
+    //   type: 'meal',
+    //   nationality: 'Italian',
+    //   category: 'Vegetarian',
+    //   alcoholicOrNot: '',
+    //   name: 'Spicy Arrabiata Penne',
+    //   image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
+    //   doneDate: '22/6/2020',
+    //   tags: ['Pasta', 'Curry'],
+    // }]));
   }, []);
 
+  const isDone = () => {
+    if (!doneRecipes.length) {
+      return false;
+    }
+    doneRecipes.some((element) => element.id === match.params.id);
+  };
+  const isInProgress = () => {
+    if (inProgressRecipes) {
+      return !!inProgressRecipes[`${category.toLowerCase()}s`][match.params.id];
+    }
+    return false;
+  };
   const getVideoId = () => recipe.strYoutube.split('v=')[1];
   const getIngredients = () => Object.entries(recipe)
     .filter((key) => key[0].includes('strIngredient')).map((ingredient) => ingredient[1]);
@@ -71,13 +118,24 @@ function RecipeDetails() {
             </div>
           ))}
           <p data-testid="instructions">{recipe.strInstructions}</p>
-          <button
-            className="start-btn"
-            type="button"
-            data-testid="start-recipe-btn"
-          >
-            Start Recipe
-          </button>
+          { !isDone() && (
+            <button
+              className="start-btn"
+              type="button"
+              data-testid="start-recipe-btn"
+            >
+              Start Recipe
+            </button>
+          )}
+          {isInProgress() && (
+            <button
+              className="start-btn"
+              type="button"
+              data-testid="start-recipe-btn"
+            >
+              Continue Recipe
+            </button>
+          )}
         </div>
       )}
     </div>
