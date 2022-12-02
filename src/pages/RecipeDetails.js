@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import Carrousel from '../components/Carrousel';
-import Footer from '../components/Footer';
 
 function RecipeDetails() {
   const history = useHistory();
@@ -73,10 +72,15 @@ function RecipeDetails() {
             </div>
           ))}
           <p data-testid="instructions">{recipe.strInstructions}</p>
+          <button
+            className="start-btn"
+            type="button"
+            data-testid="start-recipe-btn"
+          >
+            Start Recipe
+          </button>
         </div>
       )}
-
-      <Footer />
     </div>
   );
 }
