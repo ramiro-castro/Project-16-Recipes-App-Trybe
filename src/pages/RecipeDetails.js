@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 import Carrousel from '../components/Carrousel';
 
 const copy = require('clipboard-copy');
@@ -13,8 +14,16 @@ function RecipeDetails() {
   const [category, setCategory] = useState('');
   const [recomendations, setRecomendations] = useState();
   const [doneRecipes, setDoneRecipes] = useState([]);
-  const [inProgressRecipes, setInprogressRecipes] = useState();
+  const [inProgressRecipes, setInprogressRecipes] = useState([]);
   const [copied, setCopied] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+
+  const getFavorites = () => {
+    const data = localStorage.getItem('favoriteRecipes') || [];
+    if (data.length) {
+      setFavorites(JSON.parse(data));
+    }
+  };
 
   const getDoneRecipes = () => {
     const data = localStorage.getItem('doneRecipes') || [];
@@ -55,16 +64,35 @@ function RecipeDetails() {
     }
     getDoneRecipes();
     getInProgressReipes();
+    getFavorites();
+    // const inProgressRecipes = {
+    //   meals: {
+    //     52771: [],
+    //   },
+    // };
+    // localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+    // const doneRecipessave = [{
+    //   id: '52771',
+    //   type: 'meal',
+    //   nationality: 'Italian',
+    //   category: 'Vegetarian',
+    //   alcoholicOrNot: '',
+    //   name: 'Spicy Arrabiata Penne',
+    //   image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
+    //   doneDate: '22/6/2020',
+    //   tags: ['Pasta', 'Curry'],
+    // }];
+    // localStorage.setItem('doneRecipes', JSON.stringify(doneRecipessave));
   }, []);
 
   const isDone = () => {
     if (!doneRecipes.length) {
       return false;
     }
-    doneRecipes.some((element) => element.id === match.params.id);
+    return doneRecipes.some((element) => element.id === match.params.id);
   };
   const isInProgress = () => {
-    if (inProgressRecipes) {
+    if (inProgressRecipes[`${category.toLowerCase()}s`]) {
       return !!inProgressRecipes[`${category.toLowerCase()}s`][match.params.id];
     }
     return false;
@@ -78,6 +106,30 @@ function RecipeDetails() {
     copy(`http://localhost:3000${history.location.pathname}`);
     setCopied(true);
   };
+
+  const isFavorite = () => favorites.some((element) => element.id === match.params.id);
+
+  const handleFavorite = () => {
+    const recipeToSave = {
+      id: recipe[[`id${category}`]],
+      type: `${category.toLowerCase()}`,
+      nationality: recipe.strArea || '',
+      category: recipe.strCategory || '',
+      alcoholicOrNot: recipe.strAlcoholic || '',
+      name: recipe[`str${category}`],
+      image: recipe[`str${category}Thumb`],
+    };
+    if (isFavorite()) {
+      setFavorites((prev) => prev.filter((element) => element.id !== match.params.id));
+    } else {
+      setFavorites((prev) => [...prev, recipeToSave]);
+    }
+  };
+
+  useEffect(() => {
+    localStorage.setItem('favoriteRecipes', JSON.stringify(favorites));
+  }, [favorites]);
+
   return (
     <div>
       <button
@@ -88,10 +140,15 @@ function RecipeDetails() {
         <img src={ shareIcon } alt="shareIcon.svg" />
       </button>
       <button
-        data-testid="favorite-btn"
         type="button"
+        onClick={ handleFavorite }
       >
-        <img src={ whiteHeartIcon } alt="whiteHeartIcon.svg" />
+        <img
+          data-testid="favorite-btn"
+          src={ isFavorite()
+            ? blackHeartIcon : whiteHeartIcon }
+          alt="favorite icon"
+        />
       </button>
       {copied && <p>Link copied!</p>}
       {recipe && (
@@ -104,7 +161,7 @@ function RecipeDetails() {
             width="150px"
             data-testid="recipe-photo"
             src={ recipe[`str${category}Thumb`] }
-            alt=""
+            alt="recipe img"
           />
           { category !== 'Drink' && <iframe
             data-testid="video"
@@ -123,6 +180,7 @@ function RecipeDetails() {
             </div>
           ))}
           <p data-testid="instructions">{recipe.strInstructions}</p>
+          {console.log(isDone())}
           { !isDone() && (
             <button
               className="start-btn"
