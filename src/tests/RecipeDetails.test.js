@@ -7,6 +7,8 @@ import App from '../App';
 
 const mealRoute = '/meals/52771';
 const drinkRoute = '/drinks/11007';
+const titleTid = 'recipe-title';
+const favoriteBtnTid = 'favorite-btn';
 
 const localStorageMock = (function () {
   let store = {};
@@ -57,7 +59,7 @@ describe('Testa o componente RecipeDetails', () => {
       { initialEntries: [`${drinkRoute}`] },
     );
     expect(history.location.pathname).toBe(`${drinkRoute}`);
-    const title = await screen.findByTestId('recipe-title');
+    const title = await screen.findByTestId(titleTid);
     expect(title).toBeInTheDocument();
     expect(title).toHaveTextContent('Margarita');
     const recomendation = await screen.findByTestId('0-recommendation-card');
@@ -76,12 +78,12 @@ describe('Testa o componente RecipeDetails', () => {
     act(() => {
       history.push(`${mealRoute}`);
     });
-    const title = await screen.findByTestId('recipe-title');
+    const title = await screen.findByTestId(titleTid);
     expect(title).toBeInTheDocument();
-    const favoriteBtn = await screen.findByTestId('favorite-btn');
+    const favoriteBtn = await screen.findByTestId(favoriteBtnTid);
     expect(favoriteBtn).toHaveAttribute('src', 'whiteHeartIcon.svg');
     userEvent.click(favoriteBtn);
-    const favoriteBtn1 = await screen.findByTestId('favorite-btn');
+    const favoriteBtn1 = await screen.findByTestId(favoriteBtnTid);
     expect(favoriteBtn1).toHaveAttribute('src', 'blackHeartIcon.svg');
   });
 
@@ -90,15 +92,15 @@ describe('Testa o componente RecipeDetails', () => {
       <App />,
       { initialEntries: [`${drinkRoute}`] },
     );
-    const title = await screen.findByTestId('recipe-title');
+    const title = await screen.findByTestId(titleTid);
     expect(title).toBeInTheDocument();
-    const favoriteBtn = await screen.findByTestId('favorite-btn');
+    const favoriteBtn = await screen.findByTestId(favoriteBtnTid);
     expect(favoriteBtn).toHaveAttribute('src', 'whiteHeartIcon.svg');
     userEvent.click(favoriteBtn);
     act(() => {
       history.push(`${mealRoute}`);
     });
-    const favoriteBtn1 = await screen.findByTestId('favorite-btn');
+    const favoriteBtn1 = await screen.findByTestId(favoriteBtnTid);
     userEvent.click(favoriteBtn1);
   });
 
