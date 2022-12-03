@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import Carrousel from '../components/Carrousel';
+
+const copy = require('clipboard-copy');
 
 function RecipeDetails() {
   const history = useHistory();
@@ -13,6 +14,7 @@ function RecipeDetails() {
   const [recomendations, setRecomendations] = useState();
   const [doneRecipes, setDoneRecipes] = useState([]);
   const [inProgressRecipes, setInprogressRecipes] = useState();
+  const [copied, setCopied] = useState(false);
 
   const getDoneRecipes = () => {
     const data = localStorage.getItem('doneRecipes') || [];
@@ -72,12 +74,16 @@ function RecipeDetails() {
     .filter((key) => key[0].includes('strIngredient')).map((ingredient) => ingredient[1]);
   const getMeasures = () => Object.entries(recipe)
     .filter((key) => key[0].includes('strMeasure')).map((ingredient) => ingredient[1]);
-
+  const handleShare = () => {
+    copy(`http://localhost:3000${history.location.pathname}`);
+    setCopied(true);
+  };
   return (
     <div>
       <button
         data-testid="share-btn"
         type="button"
+        onClick={ handleShare }
       >
         <img src={ shareIcon } alt="shareIcon.svg" />
       </button>
@@ -87,6 +93,7 @@ function RecipeDetails() {
       >
         <img src={ whiteHeartIcon } alt="whiteHeartIcon.svg" />
       </button>
+      {copied && <p>Link copied!</p>}
       {recipe && (
         <div>
           {category !== 'Drink'
