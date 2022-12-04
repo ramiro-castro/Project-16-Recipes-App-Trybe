@@ -5,6 +5,8 @@ import App from '../App';
 import localStorageMock from './helpers/localStorageMock';
 
 const doneRecipeRoute = '/done-recipes';
+const drinkBtnDId = 'filter-by-drink-btn';
+const mealTextDId = '0-horizontal-top-text';
 
 const doneRecipes = [
   {
@@ -50,7 +52,7 @@ describe('Testa o componente RecipeDetails', () => {
     expect(history.location.pathname).toBe(doneRecipeRoute);
     const allBtn = screen.getByTestId('filter-by-all-btn');
     const mealBtn = screen.getByTestId('filter-by-meal-btn');
-    const drinkBtn = screen.getByTestId('filter-by-drink-btn');
+    const drinkBtn = screen.getByTestId(drinkBtnDId);
     expect(allBtn).toBeInTheDocument();
     expect(mealBtn).toBeInTheDocument();
     expect(drinkBtn).toBeInTheDocument();
@@ -74,8 +76,8 @@ describe('Testa o componente RecipeDetails', () => {
       { initialEntries: [doneRecipeRoute] },
     );
     expect(history.location.pathname).toBe(doneRecipeRoute);
-    const drinkBtn = screen.getByTestId('filter-by-drink-btn');
-    const mealText = screen.getByTestId('0-horizontal-top-text');
+    const drinkBtn = screen.getByTestId(drinkBtnDId);
+    const mealText = screen.getByTestId(mealTextDId);
     userEvent.click(drinkBtn);
     expect(mealText).not.toBeInTheDocument();
   });
@@ -86,14 +88,14 @@ describe('Testa o componente RecipeDetails', () => {
       { initialEntries: [doneRecipeRoute] },
     );
     expect(history.location.pathname).toBe(doneRecipeRoute);
-    const mealText = screen.getByTestId('0-horizontal-top-text');
-    const drinkBtn = screen.getByTestId('filter-by-drink-btn');
+    const mealText = screen.getByTestId(mealTextDId);
+    const drinkBtn = screen.getByTestId(drinkBtnDId);
 
     userEvent.click(drinkBtn);
     expect(mealText).not.toBeInTheDocument();
     const allBtn = screen.getByTestId('filter-by-all-btn');
     userEvent.click(allBtn);
-    const mealTextAfter = screen.getByTestId('0-horizontal-top-text');
+    const mealTextAfter = screen.getByTestId(mealTextDId);
     // console.log(history.location.pathname);
     expect(mealTextAfter).toBeInTheDocument();
   });
