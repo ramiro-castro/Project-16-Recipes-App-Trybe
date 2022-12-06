@@ -97,11 +97,15 @@ function RecipeDetails() {
     }
     return false;
   };
+
   const getVideoId = () => recipe.strYoutube.split('v=')[1];
+
   const getIngredients = () => Object.entries(recipe)
     .filter((key) => key[0].includes('strIngredient')).map((ingredient) => ingredient[1]);
+
   const getMeasures = () => Object.entries(recipe)
     .filter((key) => key[0].includes('strMeasure')).map((ingredient) => ingredient[1]);
+
   const handleShare = () => {
     copy(`http://localhost:3000${history.location.pathname}`);
     setCopied(true);
