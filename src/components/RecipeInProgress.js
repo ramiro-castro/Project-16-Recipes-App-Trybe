@@ -17,11 +17,19 @@ function RecipeInProgress() {
   const [btnDisable, setBtnDisable] = useState(true);
   const [copied, setCopied] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [doneRecipes, setDoneRecipes] = useState([]);
 
   const getFavorites = () => {
     const data = localStorage.getItem('favoriteRecipes') || [];
     if (data.length) {
       setFavorites(JSON.parse(data));
+    }
+  };
+
+  const getDoneRecipes = () => {
+    const data = localStorage.getItem('doneRecipes') || [];
+    if (data.length) {
+      setDoneRecipes(JSON.parse(data));
     }
   };
 
@@ -40,6 +48,7 @@ function RecipeInProgress() {
       setCategory('Drink');
     }
     getFavorites();
+    getDoneRecipes();
   }, []);
 
   const getVideoId = () => {
@@ -131,16 +140,24 @@ function RecipeInProgress() {
     localStorage.setItem('favoriteRecipes', JSON.stringify(favorites));
   }, [favorites]);
 
-  // const handleClick = () => {
-  //   localStorage.setItem('doneRecipes', JSON.stringify(recipe));
-  //   history.push('/done-recipes');
-  // };
+  const handleClick = () => {
+    const recipeToSave = {
+      id: recipe[[`id${category}`]],
+      type: `${category.toLowerCase()}`,
+      nationality: recipe.strArea || '',
+      category: recipe.strCategory || '',
+      alcoholicOrNot: recipe.strAlcoholic || '',
+      name: recipe[`str${category}`],
+      image: recipe[`str${category}Thumb`],
+      tags: category.toLowerCase() === 'meal' ? recipe.strTags.split(',') || [] : [],
+      doneDate: new Date(),
+    };
 
-  // useEffect(() => {
-  //   if (checked) {
-  //     localStorage.setItem('inProgressRecipes', JSON.stringify(checked));
-  //   }
-  // }, [checked]);
+    console.log(recipe.type);
+
+    localStorage.setItem('doneRecipes', JSON.stringify([...doneRecipes, recipeToSave]));
+    history.push('/done-recipes');
+  };
 
   return (
     <div>
@@ -204,7 +221,7 @@ function RecipeInProgress() {
             data-testid="finish-recipe-btn"
             type="button"
             disabled={ btnDisable }
-            // onClick={ handleClick }
+            onClick={ handleClick }
           >
             Finalizar
           </button>
