@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 import './RecipeInProgress.css';
+
+const copy = require('clipboard-copy');
 
 function RecipeInProgress() {
   const history = useHistory();
@@ -12,6 +15,15 @@ function RecipeInProgress() {
   const [checked, setChecked] = useState([]);
   const [filterIngredients, setFilterIngredients] = useState([]);
   const [btnDisable, setBtnDisable] = useState(true);
+  const [copied, setCopied] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+
+  const getFavorites = () => {
+    const data = localStorage.getItem('favoriteRecipes') || [];
+    if (data.length) {
+      setFavorites(JSON.parse(data));
+    }
+  };
 
   useEffect(() => {
     if (history.location.pathname.includes('meals')) {
@@ -27,6 +39,7 @@ function RecipeInProgress() {
         .then((data) => setRecipe(data.drinks[0]));
       setCategory('Drink');
     }
+    getFavorites();
   }, []);
 
   const getVideoId = () => {
@@ -85,6 +98,39 @@ function RecipeInProgress() {
     console.log(btnDisable);
   };
 
+  const handleShare = () => {
+    if (history.location.pathname.includes('meals')) {
+      copy(`http://localhost:3000/meals/${match.params.id}`);
+      setCopied(true);
+    } else {
+      copy(`http://localhost:3000/drinks/${match.params.id}`);
+      setCopied(true);
+    }
+  };
+
+  const isFavorite = () => favorites.some((element) => element.id === match.params.id);
+
+  const handleFavorite = () => {
+    const recipeToSave = {
+      id: recipe[[`id${category}`]],
+      type: `${category.toLowerCase()}`,
+      nationality: recipe.strArea || '',
+      category: recipe.strCategory || '',
+      alcoholicOrNot: recipe.strAlcoholic || '',
+      name: recipe[`str${category}`],
+      image: recipe[`str${category}Thumb`],
+    };
+    if (isFavorite()) {
+      setFavorites((prev) => prev.filter((element) => element.id !== match.params.id));
+    } else {
+      setFavorites((prev) => [...prev, recipeToSave]);
+    }
+  };
+
+  useEffect(() => {
+    localStorage.setItem('favoriteRecipes', JSON.stringify(favorites));
+  }, [favorites]);
+
   // const handleClick = () => {
   //   localStorage.setItem('doneRecipes', JSON.stringify(recipe));
   //   history.push('/done-recipes');
@@ -101,15 +147,22 @@ function RecipeInProgress() {
       <button
         data-testid="share-btn"
         type="button"
+        onClick={ handleShare }
       >
         <img src={ shareIcon } alt="shareIcon.svg" />
       </button>
       <button
-        data-testid="favorite-btn"
         type="button"
+        onClick={ handleFavorite }
       >
-        <img src={ whiteHeartIcon } alt="whiteHeartIcon.svg" />
+        <img
+          data-testid="favorite-btn"
+          src={ isFavorite()
+            ? blackHeartIcon : whiteHeartIcon }
+          alt="favorite icon"
+        />
       </button>
+      {copied && <p>Link copied!</p>}
       {recipe && (
         <div>
           {category !== 'Drink'
