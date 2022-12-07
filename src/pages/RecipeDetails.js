@@ -72,6 +72,8 @@ function RecipeDetails() {
     setTimeout(() => setIsLoading(false), loadingTime);
   }, []);
 
+  // console.log(history);
+
   const isDone = () => {
     if (!doneRecipes.length) {
       return false;

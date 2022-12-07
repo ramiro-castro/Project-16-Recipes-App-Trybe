@@ -68,7 +68,6 @@ function RecipeCard({ recipes }) {
         }
       </section>
     </div>
-
   );
 }
 
