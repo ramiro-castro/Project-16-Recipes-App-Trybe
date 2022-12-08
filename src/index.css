@@ -11,3 +11,43 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root {
+  --main-bg-color: #03071e;
+  --main-primary-color: #faa307;
+  --main-primary-color-light: #f2d895;
+  --login-top-color: #6a040f;
+  --main-text-color: #f0f1d5;
+  --border-radius: 5px;
+  --breack-point: 600px;
+}
+
+.button {
+  border: none;
+  cursor: pointer;
+  background-color: var(--main-primary-color);
+  font-weight: 700;
+  color: var(--main-text-color);
+  text-shadow: 0 0 3px #03071e;
+  border-radius: var(--border-radius);
+  padding: 0.5rem;
+  transition: all 0.3s;
+}
+
+.button:hover {
+  filter: brightness(115%);
+}
+
+.button:disabled {
+  filter: grayscale(100%);
+}
+
+.button:enabled {
+  border: none;
+}
+
+button {
+  background: none;
+  border: none;
+  color: var(--main-text-color);
+}

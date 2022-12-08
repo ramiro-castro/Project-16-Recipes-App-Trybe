@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import tomate from '../images/tomate.svg';
+import logo from '../images/logo.svg';
+import './Login.css';
 
 const INITIAL_USER_STATE = {
   email: '',
@@ -36,31 +39,40 @@ function Login({ history: { push } }) {
   };
 
   return (
-    <div>
-      <input
-        name="email"
-        placeholder="Email"
-        type="text"
-        data-testid="email-input"
-        value={ email }
-        onChange={ handleInput }
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Senha"
-        data-testid="password-input"
-        value={ password }
-        onChange={ handleInput }
-      />
-      <button
-        data-testid="login-submit-btn"
-        type="button"
-        disabled={ disable }
-        onClick={ handleClick }
-      >
-        Enter
-      </button>
+    <div className="login">
+      <div className="background-top">
+        <img src={ logo } alt="logo" className="logo" />
+        <div className="tomatto">
+          <img src={ tomate } alt="ilustração de tomates com algumas alfaces ao fundo" />
+        </div>
+      </div>
+      <div className="form">
+        <input
+          name="email"
+          placeholder="Email"
+          type="text"
+          data-testid="email-input"
+          value={ email }
+          onChange={ handleInput }
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Senha"
+          data-testid="password-input"
+          value={ password }
+          onChange={ handleInput }
+        />
+        <button
+          className="button"
+          data-testid="login-submit-btn"
+          type="button"
+          disabled={ disable }
+          onClick={ handleClick }
+        >
+          Enter
+        </button>
+      </div>
     </div>
   );
 }

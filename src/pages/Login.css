@@ -1,0 +1,83 @@
+.login {
+  background-color: var(--main-bg-color);
+  width: 100%;
+  overflow-y: hidden;
+}
+
+.login .background-top {
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--login-top-color);
+}
+
+.login .logo {
+  margin-top: -7vh;
+}
+
+.login .tomatto {
+  position: absolute;
+  left: 0;
+  margin-top: 46vh;
+  z-index: 10;
+}
+
+.tomatto img {
+  width: 100vw;
+}
+
+.login .form {
+  padding-inline: 1rem;
+  margin-top: min(2.5vh, 100px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-inline: auto;
+  gap: 1rem;
+  width: 90%;
+  min-height: 50vh;
+}
+
+.login input {
+  width: 100%;
+  font-size: 16px;
+  border-color: var(--main-text-color);
+  color: var(--main-text-color);
+  border-style: solid;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  border-width: 1px;
+  background-color: var(--main-bg-color);
+  transition: all 0.3s;
+}
+
+input:focus {
+  outline: 0.5px solid var(--main-text-color);
+}
+
+.login .button {
+  width: 100%;
+}
+
+@media (min-width: 450px) {
+  .login {
+    display: flex;
+  }
+  .login .background-top {
+    min-height: 100vh;
+    min-width: 50%;
+  }
+  .login .tomatto img {
+    width: 50vw;
+    max-width: 600px;
+  }
+  .login .form {
+    width: 50%;
+    max-width: 30em;
+  }
+  .login .logo {
+    margin-top: -25vh;
+  }
+}
