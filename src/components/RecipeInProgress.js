@@ -66,23 +66,23 @@ function RecipeInProgress() {
 
   const removeNull = () => {
     if (recipe.length !== 0) {
-      // console.log(recipe);
+      console.log(recipe);
       const allIngredients = getIngredients();
       // console.log(allIngredients);
-      const indexNull = allIngredients.indexOf('');
-
+      // console.log(allIngredients);
+      const indexNull = allIngredients.indexOf(null);
+      // console.log(indexNull);
+      setFilterIngredients(allIngredients.slice(0, indexNull));
       const getItem = JSON.parse(localStorage.getItem('inProgressRecipes')) || [];
       // console.log(getItem);
       let createArr = [];
       if (getItem.length !== 0) {
         createArr = getItem;
       } else {
-        createArr = allIngredients.slice(0, indexNull).map(() => false);
+        createArr = filterIngredients.map(() => false);
       }
       // console.log(createArr);
       setChecked(createArr);
-      setFilterIngredients(allIngredients.slice(0, indexNull));
-      // console.log(allIngredients.slice(0, indexNull);
     }
   };
 
