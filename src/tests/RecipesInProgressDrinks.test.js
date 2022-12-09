@@ -144,4 +144,28 @@ describe('Testes para drinks', () => {
     expect(shareBtn).toBeInTheDocument();
     userEvent.click(shareBtn);
   });
+  it('Testa a recuperacao do estado de check', async () => {
+    renderWithRouterAndRedux(
+      <App />,
+      { initialEntries: [drinksRecipe] },
+    );
+
+    const finalizarBtn = await screen.findByTestId('finish-recipe-btn');
+    expect(finalizarBtn).toBeDisabled();
+
+    const inputsCheckbox2 = await screen.findAllByRole('checkbox');
+    // console.log(inputsCheckbox.length);
+    userEvent.click(inputsCheckbox2[0]);
+    userEvent.click(inputsCheckbox2[1]);
+
+    renderWithRouterAndRedux(
+      <App />,
+      { initialEntries: ['/drinks/'] },
+    );
+    renderWithRouterAndRedux(
+      <App />,
+      { initialEntries: [drinksRecipe] },
+    );
+    userEvent.click(inputsCheckbox2[2]);
+  });
 });

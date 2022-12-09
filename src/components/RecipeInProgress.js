@@ -12,6 +12,7 @@ function RecipeInProgress() {
   const [category, setCategory] = useState('');
   const [checked, setChecked] = useState([]);
   const [filterIngredients, setFilterIngredients] = useState([]);
+  const [filteredMeasures, setfilteredMeasures] = useState([]);
   const [btnDisable, setBtnDisable] = useState(true);
   const [copied, setCopied] = useState(false);
   const [favorites, setFavorites] = useState([]);
@@ -68,18 +69,25 @@ function RecipeInProgress() {
     if (recipe.length !== 0) {
       console.log(recipe);
       const allIngredients = getIngredients();
+      const allMeasures = getMeasures();
       // console.log(allIngredients);
       // console.log(allIngredients);
       const indexNull = allIngredients.indexOf(null);
+      const indexStringVazia = allIngredients.indexOf('');
+      const indexNullMeasures = allMeasures.indexOf(null);
+      let auxSetfilIngredient = allIngredients.slice(0, indexNull);
+      auxSetfilIngredient = allIngredients.slice(0, indexStringVazia);
       // console.log(indexNull);
-      setFilterIngredients(allIngredients.slice(0, indexNull));
+      // console.log(allIngredients.slice(0, indexNull));
+      setFilterIngredients(auxSetfilIngredient);
+      setfilteredMeasures(allMeasures.slice(0, indexNullMeasures));
       const getItem = JSON.parse(localStorage.getItem('inProgressRecipes')) || [];
       // console.log(getItem);
       let createArr = [];
       if (getItem.length !== 0) {
         createArr = getItem;
       } else {
-        createArr = filterIngredients.map(() => false);
+        createArr = auxSetfilIngredient.map(() => false);
       }
       // console.log(createArr);
       setChecked(createArr);
@@ -98,13 +106,11 @@ function RecipeInProgress() {
     const updatedCheckedState = checked
       .map((item, index) => (index === position ? !item : item));
     setChecked(updatedCheckedState);
-    // console.log(updatedCheckedState);
     const verifyBtn = updatedCheckedState.every((el) => el === true);
     // console.log(verifyBtn);
     localStorage.setItem('inProgressRecipes', JSON.stringify(updatedCheckedState));
     const teste = verifyBtn === false;
     setBtnDisable(teste);
-    // console.log(btnDisable);
   };
 
   // https://stackoverflow.com/questions/71873824/copy-text-to-clipboard-cannot-read-properties-of-undefined-reading-writetext
@@ -162,9 +168,7 @@ function RecipeInProgress() {
       tags: category.toLowerCase() === 'meal' ? recipe.strTags.split(',') || [] : [],
       doneDate: new Date(),
     };
-
     // console.log(recipe.type);
-
     localStorage.setItem('doneRecipes', JSON.stringify([...doneRecipes, recipeToSave]));
     history.push('/done-recipes');
   };
@@ -217,7 +221,9 @@ function RecipeInProgress() {
                   checked={ checked[index] }
                   onChange={ () => handleFilters(index) }
                 />
-                {`${ingredient} ${getMeasures()[index]}`}
+                {`${ingredient} ${filteredMeasures[index] !== undefined
+                  ? filteredMeasures[index]
+                  : ''}`}
               </label>
             </div>
           ))}
@@ -240,5 +246,4 @@ function RecipeInProgress() {
     </div>
   );
 }
-
 export default RecipeInProgress;
