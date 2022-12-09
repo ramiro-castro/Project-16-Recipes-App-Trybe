@@ -5,8 +5,6 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import './RecipeInProgress.css';
 
-const copy = require('clipboard-copy');
-
 function RecipeInProgress() {
   const history = useHistory();
   const match = useRouteMatch();
