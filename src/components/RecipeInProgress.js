@@ -26,7 +26,7 @@ function RecipeInProgress() {
     }
   };
 
-  const getDoneRecipes = () => {
+  const getDoneRecipes = () => { // verifica se tem informacoes no localStorage, caso tenha, elas serao salvas no array doneRecipes (linha 20)
     const data = localStorage.getItem('doneRecipes') || [];
     if (data.length) {
       setDoneRecipes(JSON.parse(data));
@@ -57,7 +57,7 @@ function RecipeInProgress() {
     }
   };
 
-  console.log(recipe);
+  // console.log(recipe);
 
   const getIngredients = () => (Object.entries(recipe)
     .filter((key) => key[0].includes('strIngredient'))
@@ -68,21 +68,23 @@ function RecipeInProgress() {
 
   const removeNull = () => {
     if (recipe.length !== 0) {
+      // console.log(recipe);
       const allIngredients = getIngredients();
-      console.log(allIngredients);
+      // console.log(allIngredients);
       const indexNull = allIngredients.indexOf('');
 
       const getItem = JSON.parse(localStorage.getItem('inProgressRecipes')) || [];
-      console.log(getItem);
+      // console.log(getItem);
       let createArr = [];
       if (getItem.length !== 0) {
         createArr = getItem;
       } else {
         createArr = allIngredients.slice(0, indexNull).map(() => false);
       }
-      console.log(createArr);
+      // console.log(createArr);
       setChecked(createArr);
       setFilterIngredients(allIngredients.slice(0, indexNull));
+      // console.log(allIngredients.slice(0, indexNull);
     }
   };
 
@@ -93,26 +95,35 @@ function RecipeInProgress() {
   // https://www.freecodecamp.org/news/how-to-work-with-multiple-checkboxes-in-react/
 
   const handleFilters = (position) => {
-    console.log(checked);
-    console.log(position);
+    // console.log(checked);
+    // console.log(position);
     const updatedCheckedState = checked
       .map((item, index) => (index === position ? !item : item));
     setChecked(updatedCheckedState);
-    console.log(updatedCheckedState);
+    // console.log(updatedCheckedState);
     const verifyBtn = updatedCheckedState.every((el) => el === true);
-    console.log(verifyBtn);
+    // console.log(verifyBtn);
     localStorage.setItem('inProgressRecipes', JSON.stringify(updatedCheckedState));
     const teste = verifyBtn === false;
     setBtnDisable(teste);
-    console.log(btnDisable);
+    // console.log(btnDisable);
+  };
+
+  // https://stackoverflow.com/questions/71873824/copy-text-to-clipboard-cannot-read-properties-of-undefined-reading-writetext
+  const copyToClipboard = async (input) => {
+    try {
+      await navigator.clipboard.writeText(input);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleShare = () => {
     if (history.location.pathname.includes('meals')) {
-      copy(`http://localhost:3000/meals/${match.params.id}`);
+      copyToClipboard(`http://localhost:3000/meals/${match.params.id}`);
       setCopied(true);
     } else {
-      copy(`http://localhost:3000/drinks/${match.params.id}`);
+      copyToClipboard(`http://localhost:3000/drinks/${match.params.id}`);
       setCopied(true);
     }
   };
@@ -129,6 +140,7 @@ function RecipeInProgress() {
       name: recipe[`str${category}`],
       image: recipe[`str${category}Thumb`],
     };
+    // console.log(recipeToSave);
     if (isFavorite()) {
       setFavorites((prev) => prev.filter((element) => element.id !== match.params.id));
     } else {
@@ -153,7 +165,7 @@ function RecipeInProgress() {
       doneDate: new Date(),
     };
 
-    console.log(recipe.type);
+    // console.log(recipe.type);
 
     localStorage.setItem('doneRecipes', JSON.stringify([...doneRecipes, recipeToSave]));
     history.push('/done-recipes');
