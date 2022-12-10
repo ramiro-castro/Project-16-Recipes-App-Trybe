@@ -161,14 +161,14 @@ function RecipeInProgress() {
       id: recipe[[`id${category}`]],
       type: `${category.toLowerCase()}`,
       nationality: recipe.strArea || '',
-      category: recipe.strCategory || '',
+      category: recipe.strCategory,
       alcoholicOrNot: recipe.strAlcoholic || '',
       name: recipe[`str${category}`],
       image: recipe[`str${category}Thumb`],
-      tags: category.toLowerCase() === 'meal' ? recipe.strTags.split(',') || [] : [],
+      tags: recipe.strTags !== null ? recipe.strTags.split(',') : [],
       doneDate: new Date(),
     };
-
+    console.log(recipeToSave);
     localStorage.setItem('doneRecipes', JSON.stringify([...doneRecipes, recipeToSave]));
     history.push('/done-recipes');
   };
