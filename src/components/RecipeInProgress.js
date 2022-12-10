@@ -56,8 +56,6 @@ function RecipeInProgress() {
     }
   };
 
-  // console.log(recipe);
-
   const getIngredients = () => (Object.entries(recipe)
     .filter((key) => key[0].includes('strIngredient'))
     .map((ingredient) => ingredient[1]));
@@ -65,31 +63,38 @@ function RecipeInProgress() {
   const getMeasures = () => Object.entries(recipe)
     .filter((key) => key[0].includes('strMeasure')).map((ingredient) => ingredient[1]);
 
+  const sliceIngredients = () => {
+    const menosUm = -1;
+    const allIngredients = getIngredients();
+    const indexNull = allIngredients.indexOf(null);
+    const indexStrgVazia = allIngredients.indexOf('');
+    if (indexNull !== menosUm && indexStrgVazia !== menosUm) {
+      const aux = allIngredients.slice(0, indexNull);
+      return aux.slice(0, indexStrgVazia);
+    }
+    if (indexStrgVazia !== menosUm) {
+      return allIngredients.slice(0, indexStrgVazia);
+    }
+    return allIngredients.slice(0, indexNull);
+  };
+
   const removeNull = () => {
     if (recipe.length !== 0) {
       console.log(recipe);
-      const allIngredients = getIngredients();
       const allMeasures = getMeasures();
-      // console.log(allIngredients);
-      // console.log(allIngredients);
-      const indexNull = allIngredients.indexOf(null);
-      const indexStringVazia = allIngredients.indexOf('');
       const indexNullMeasures = allMeasures.indexOf(null);
-      let auxSetfilIngredient = allIngredients.slice(0, indexNull);
-      auxSetfilIngredient = allIngredients.slice(0, indexStringVazia);
-      // console.log(indexNull);
-      // console.log(allIngredients.slice(0, indexNull));
-      setFilterIngredients(auxSetfilIngredient);
       setfilteredMeasures(allMeasures.slice(0, indexNullMeasures));
+
+      const auxSetfilIngredient = sliceIngredients();
+      setFilterIngredients(auxSetfilIngredient);
+
       const getItem = JSON.parse(localStorage.getItem('inProgressRecipes')) || [];
-      // console.log(getItem);
       let createArr = [];
       if (getItem.length !== 0) {
         createArr = getItem;
       } else {
         createArr = auxSetfilIngredient.map(() => false);
       }
-      // console.log(createArr);
       setChecked(createArr);
     }
   };
@@ -99,15 +104,11 @@ function RecipeInProgress() {
   }, [recipe]);
 
   // https://www.freecodecamp.org/news/how-to-work-with-multiple-checkboxes-in-react/
-
   const handleFilters = (position) => {
-    // console.log(checked);
-    // console.log(position);
     const updatedCheckedState = checked
       .map((item, index) => (index === position ? !item : item));
     setChecked(updatedCheckedState);
     const verifyBtn = updatedCheckedState.every((el) => el === true);
-    // console.log(verifyBtn);
     localStorage.setItem('inProgressRecipes', JSON.stringify(updatedCheckedState));
     const teste = verifyBtn === false;
     setBtnDisable(teste);
@@ -144,7 +145,6 @@ function RecipeInProgress() {
       name: recipe[`str${category}`],
       image: recipe[`str${category}Thumb`],
     };
-    // console.log(recipeToSave);
     if (isFavorite()) {
       setFavorites((prev) => prev.filter((element) => element.id !== match.params.id));
     } else {
@@ -168,7 +168,7 @@ function RecipeInProgress() {
       tags: category.toLowerCase() === 'meal' ? recipe.strTags.split(',') || [] : [],
       doneDate: new Date(),
     };
-    // console.log(recipe.type);
+
     localStorage.setItem('doneRecipes', JSON.stringify([...doneRecipes, recipeToSave]));
     history.push('/done-recipes');
   };
@@ -246,4 +246,5 @@ function RecipeInProgress() {
     </div>
   );
 }
+
 export default RecipeInProgress;

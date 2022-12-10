@@ -72,4 +72,12 @@ describe('Testes para meals', () => {
       { initialEntries: ['/meals/53060/in-progress'] },
     );
   });
+  it('Testa recipe com string vazia e null nos ingredientes', async () => {
+    renderWithRouterAndRedux(
+      <App />,
+      { initialEntries: ['/meals/52771/in-progress'] },
+    );
+    const arrabiataText = await screen.findByText('Spicy Arrabiata Penne');
+    expect(arrabiataText).toBeInTheDocument();
+  });
 });
