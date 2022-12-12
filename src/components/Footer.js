@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import drinkIcon from '../images/drinkIcon.svg';
-import mealIcon from '../images/mealIcon.svg';
+import mealIcon from '../images/mealIconLight.svg';
 import './Footer.css';
 
 function Footer() {

@@ -1,5 +1,11 @@
 .menu-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   bottom: 0;
   padding: 2px;
+  width: 100%;
   position: fixed;
+  height: 8vh;
+  background-color: var(--main-primary-color);
 }

@@ -13,7 +13,8 @@
 }
 
 .login .logo {
-  margin-top: -7vh;
+  margin-top: -10vh;
+  max-width: 45vw;
 }
 
 .login .tomatto {
