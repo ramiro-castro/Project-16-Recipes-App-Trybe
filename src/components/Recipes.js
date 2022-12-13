@@ -15,6 +15,7 @@ import chicken from '../images/chicken.svg';
 import dessert from '../images/dessert.svg';
 import goat from '../images/goat.svg';
 import mealIcon from '../images/mealIcon.svg';
+import Loading from './Loading';
 import drinkIconMain from '../images/drinkIconMain.svg';
 
 const mealIcons = [beef, breakfest, chicken, dessert, goat];
@@ -33,22 +34,28 @@ function Recipes({ history: { push, location: { pathname } } }) {
   const [drinksData, setDriksData] = useState([]);
   const [mealCategories, setMealCategories] = useState([]);
   const [drinkCategories, setDrinkCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const loadingTime = 1500;
 
   useEffect(() => {
     const fetchMeal = async () => {
+      setIsLoading(true);
       const url = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
       const request = await fetch(url);
       const response = await request.json();
       setMealData(response.meals);
       setResetMeal(response.meals);
+      setTimeout(() => setIsLoading(false), loadingTime);
     };
 
     const fetchDrinks = async () => {
+      setIsLoading(true);
       const url = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
       const request = await fetch(url);
       const response = await request.json();
       setDriksData(response.drinks);
       setResetDrink(response.drinks);
+      setTimeout(() => setIsLoading(false), loadingTime);
     };
     fetchDrinks();
     fetchMeal();
@@ -56,16 +63,20 @@ function Recipes({ history: { push, location: { pathname } } }) {
 
   useEffect(() => {
     const mealCategory = async () => {
+      setIsLoading(true);
       const url = 'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
       const request = await fetch(url);
       const response = await request.json();
       setMealCategories(response.meals);
+      setTimeout(() => setIsLoading(false), loadingTime);
     };
     const drinkCategory = async () => {
+      setIsLoading(true);
       const url = 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list';
       const request = await fetch(url);
       const response = await request.json();
       setDrinkCategories(response.drinks);
+      setTimeout(() => setIsLoading(false), loadingTime);
     };
     drinkCategory();
     mealCategory();
@@ -73,11 +84,13 @@ function Recipes({ history: { push, location: { pathname } } }) {
 
   const handleMealClick = async (e) => {
     if (clicked === false) {
+      setIsLoading(true);
       const url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${e}`;
       const request = await fetch(url);
       const response = await request.json();
       setMealData(response.meals);
       setClicked(true);
+      setTimeout(() => setIsLoading(false), loadingTime);
     } else {
       setMealData(resetMeal);
       setClicked(false);
@@ -86,11 +99,13 @@ function Recipes({ history: { push, location: { pathname } } }) {
 
   const handleDrinkClick = async (e) => {
     if (clicked === false) {
+      setIsLoading(true);
       const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${e}`;
       const request = await fetch(url);
       const response = await request.json();
       setDriksData(response.drinks);
       setClicked(true);
+      setTimeout(() => setIsLoading(false), loadingTime);
     } else {
       setDriksData(resetDrink);
       setClicked(false);
@@ -112,8 +127,17 @@ function Recipes({ history: { push, location: { pathname } } }) {
     return push(`/drinks/${id}`);
   };
 
+  if (isLoading) {
+    return (
+      <div className="recipes">
+        <Loading />
+      </div>
+    );
+  }
+
   if (path === '/drinks') {
     return (
+
       <main className="recipes">
         <div className="title">
           <img src={ drinkIconMain } alt="mealIcon" />

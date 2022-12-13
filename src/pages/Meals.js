@@ -19,7 +19,7 @@ function Meals({ history }) {
 
   return (
     <div>
-      <Header profile search>Meals</Header>
+      <Header profile search />
       {validation()
         ? (
           <RecipeCard recipes={ recipes } />
