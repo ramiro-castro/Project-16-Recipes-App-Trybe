@@ -3,9 +3,21 @@
   align-items: center;
   justify-content: space-around;
   bottom: 0;
-  padding: 2px;
+  padding: 0.5rem;
   width: 100%;
   position: fixed;
-  height: 8vh;
+  height: 3rem;
   background-color: var(--main-primary-color);
+}
+
+@media (min-width: 40em) {
+  .header {
+    height: 3rem;
+  }
+}
+
+@media (min-width: 60em) {
+  .header {
+    height: 4rem;
+  }
 }

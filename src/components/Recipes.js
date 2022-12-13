@@ -15,6 +15,7 @@ import chicken from '../images/chicken.svg';
 import dessert from '../images/dessert.svg';
 import goat from '../images/goat.svg';
 import mealIcon from '../images/mealIcon.svg';
+import drinkIconMain from '../images/drinkIconMain.svg';
 
 const mealIcons = [beef, breakfest, chicken, dessert, goat];
 const drinkIcons = [OrdinaryDrink, Cocktail, Shake, OtherUnknown, Cocoa];
@@ -114,7 +115,10 @@ function Recipes({ history: { push, location: { pathname } } }) {
   if (path === '/drinks') {
     return (
       <main className="recipes">
-        <h1>drinks</h1>
+        <div className="title">
+          <img src={ drinkIconMain } alt="mealIcon" />
+          <h1>Drinks</h1>
+        </div>
         <nav className="category-container">
           <button
             className="category-icons"
@@ -123,7 +127,7 @@ function Recipes({ history: { push, location: { pathname } } }) {
             data-testid="All-category-filter"
           >
             <img src={ all } alt="category icon" />
-            all
+            <p className="category-text">all</p>
           </button>
           {drinkCategories.map((drink, index) => index < five && (
             <button
@@ -135,7 +139,7 @@ function Recipes({ history: { push, location: { pathname } } }) {
               key={ index }
             >
               <img src={ drinkIcons[index] } alt="category icon" />
-              {drink.strCategory}
+              <p className="category-text">{drink.strCategory}</p>
 
             </button>))}
         </nav>
@@ -181,7 +185,7 @@ function Recipes({ history: { push, location: { pathname } } }) {
           data-testid="All-category-filter"
         >
           <img src={ allMeal } alt="category icon" />
-          all
+          <p className="category-text">all</p>
         </button>
         {mealCategories.map((meal, index) => index < five && (
           <button
@@ -193,9 +197,7 @@ function Recipes({ history: { push, location: { pathname } } }) {
             key={ index }
           >
             <img src={ mealIcons[index] } alt="category icon" />
-
-            {meal.strCategory}
-
+            <p className="category-text">{meal.strCategory}</p>
           </button>))}
       </nav>
       <section className="section-recipes">

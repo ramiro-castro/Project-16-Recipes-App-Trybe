@@ -1,0 +1,40 @@
+.header {
+  padding-block: 0.8rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: var(--main-primary-color);
+  margin-block-end: 1.5rem;
+}
+
+.header img {
+  height: 100%;
+}
+
+.header .icons-container {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.header .icons-container img {
+  width: 100%;
+}
+
+@media (min-width: 40em) {
+  .header {
+    height: 4rem;
+  }
+  .header .icons-container {
+    gap: 0.4rem;
+  }
+}
+
+@media (min-width: 60em) {
+  .header {
+    height: 4.5rem;
+  }
+  .header .icons-container {
+    gap: 0.6rem;
+  }
+}
