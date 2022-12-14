@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import ShareButton from '../components/ShareButton';
 import Loading from '../components/Loading';
 import allFoods from '../images/allFoods.svg';
+import Footer from '../components/Footer';
 import foods from '../images/foods.svg';
 import doneIcon from '../images/doneIcon.svg';
 import './DoneRecipes.css';
@@ -42,6 +43,8 @@ function DoneRecipes() {
   }, []);
 
   useEffect(() => { setFiltredRecipes(doneRecipes); }, [doneRecipes]);
+
+  const setDate = () => options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
   if (isLoading) {
     return (
@@ -92,19 +95,18 @@ function DoneRecipes() {
                     alt="recipe"
                   />
                   <div className="details-food">
+                    <p className="name-food" data-testid={ `${index}-horizontal-name` }>{recipe.name}</p>
                     {recipe.type !== 'drink' ? (
-                      <p data-testid={ `${index}-horizontal-top-text` }>
+                      <p className="title-food" data-testid={ `${index}-horizontal-top-text` }>
                         {`${recipe.nationality} - ${recipe.category}`}
                       </p>
                     )
                       : (
-                        <p data-testid={ `${index}-horizontal-top-text` }>
+                        <p className="title-food" data-testid={ `${index}-horizontal-top-text` }>
                           {`${recipe.alcoholicOrNot}`}
                         </p>
                       )}
-
-                    <p data-testid={ `${index}-horizontal-name` }>{recipe.name}</p>
-                    <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
+                    <p className="done-date" data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
                     {/* <button type="button">
                 <img
                 src={ shareIcon }
@@ -112,25 +114,31 @@ function DoneRecipes() {
                   alt="share Icon"
                 />
               </button> */}
-                    {recipe.tags.map((tagName) => (
-                      <p
-                        data-testid={ `${index}-${tagName}-horizontal-tag` }
-                        key={ tagName }
-                      >
-                        {tagName}
-                      </p>
-                    ))}
+                    <div className="tag-container">
+                      {recipe.tags.map((tagName) => (
+                        <div className="tag-food" key={ tagName }>
+                          <p
+                            data-testid={ `${index}-${tagName}-horizontal-tag` }
+                          >
+                            {tagName}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="share-btn">
+                      <ShareButton
+                        recipe={ recipe }
+                        testId={ `${index}-horizontal-share-btn` }
+                      />
+                    </div>
                   </div>
-                  <ShareButton
-                    recipe={ recipe }
-                    testId={ `${index}-horizontal-share-btn` }
-                  />
                 </div>
               </Link>
             ))}
           </div>
         )}
       </div>
+      <Footer />
     </>
   );
 }

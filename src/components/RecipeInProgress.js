@@ -156,6 +156,12 @@ function RecipeInProgress() {
     localStorage.setItem('favoriteRecipes', JSON.stringify(favorites));
   }, [favorites]);
 
+  const formatDate = () => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const today = new Date();
+    return today.toLocaleDateString('pt-BR', options);
+  };
+
   const handleClick = () => {
     const recipeToSave = {
       id: recipe[[`id${category}`]],
@@ -165,8 +171,8 @@ function RecipeInProgress() {
       alcoholicOrNot: recipe.strAlcoholic || '',
       name: recipe[`str${category}`],
       image: recipe[`str${category}Thumb`],
-      tags: recipe.strTags !== null ? recipe.strTags.split(',') : [],
-      doneDate: new Date(),
+      tags: category.toLowerCase() === 'meal' ? recipe.strTags.split(',') || [] : [],
+      doneDate: formatDate(),
     };
     console.log(recipeToSave);
     localStorage.setItem('doneRecipes', JSON.stringify([...doneRecipes, recipeToSave]));

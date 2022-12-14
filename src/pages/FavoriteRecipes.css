@@ -1,0 +1,28 @@
+.favorites-recipes {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+.filters-buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+}
+
+.done-recipes-container {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    width: 80%;
+}
