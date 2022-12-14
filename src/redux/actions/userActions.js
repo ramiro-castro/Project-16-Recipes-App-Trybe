@@ -3,4 +3,6 @@ export const saveEmail = (payload) => ({
   payload,
 });
 
-export const unknown = () => {};
+export const searchToggle = () => ({
+  type: 'SEARCH',
+});

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './Recipe.css';
+import { useSelector } from 'react-redux';
 import OrdinaryDrink from '../images/OrdinaryDrink.svg';
 import OtherUnknown from '../images/OtherUnknown.svg';
 import Shake from '../images/Shake.svg';
@@ -17,6 +18,7 @@ import goat from '../images/goat.svg';
 import mealIcon from '../images/mealIcon.svg';
 import Loading from './Loading';
 import drinkIconMain from '../images/drinkIconMain.svg';
+import SearchBar from './SearchBar';
 
 const mealIcons = [beef, breakfest, chicken, dessert, goat];
 const drinkIcons = [OrdinaryDrink, Cocktail, Shake, OtherUnknown, Cocoa];
@@ -112,6 +114,8 @@ function Recipes({ history: { push, location: { pathname } } }) {
     }
   };
 
+  const isSearch = useSelector(({ recipesReducer }) => recipesReducer.isSearch);
+
   const allDrinks = () => {
     setDriksData(resetDrink);
   };
@@ -137,12 +141,12 @@ function Recipes({ history: { push, location: { pathname } } }) {
 
   if (path === '/drinks') {
     return (
-
       <main className="recipes">
         <div className="title">
           <img src={ drinkIconMain } alt="mealIcon" />
           <h1>Drinks</h1>
         </div>
+        {isSearch && <SearchBar />}
         <nav className="category-container">
           <button
             className="category-icons"
@@ -201,6 +205,7 @@ function Recipes({ history: { push, location: { pathname } } }) {
         <img src={ mealIcon } alt="mealIcon" />
         <h1>Meals</h1>
       </div>
+      {isSearch && <SearchBar />}
       <nav className="category-container">
         <button
           className="category-icons"
@@ -244,7 +249,6 @@ function Recipes({ history: { push, location: { pathname } } }) {
               data-testid={ `${index}-card-name` }
             >
               {meal.strMeal}
-
             </h3>
           </button>
         ))}

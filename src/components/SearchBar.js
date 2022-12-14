@@ -1,4 +1,6 @@
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
 import { saveRecipes } from '../redux/actions/recipesActions';
 import {
   firstLetterDrinkApi,
@@ -8,27 +10,49 @@ import {
   nameDrinkApi,
   nameFoodApi,
 } from '../services/requestApi';
+import './SearchBar.css';
 
-function SearchBar({ input, option, handleFilters, pathname, push }) {
+const foodSearch = {
+  input: '',
+  option: '',
+};
+
+function SearchBar() {
   const dispatch = useDispatch();
+  const [searchOptions, setSearchOptions] = useState(foodSearch);
 
-  const handleSearch = async () => {
+  const history = useHistory();
+  const { pathname } = history.location;
+  const { push } = history;
+
+  const handleFilters = ({ target: { value, name } }) => {
+    setSearchOptions({ ...searchOptions, [name]: value });
+  };
+  const { input, option } = searchOptions;
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    // https://horadecodar.com.br/2022/05/31/como-trocar-espacos-por-underline-em-string-com-javascript/
+    const myImputUnderline = input.replace(/ /g, '_');
     let ing = [];
     switch (option) {
     case 'Ingredient':
       ing = pathname === '/meals'
-        ? await ingredientFoodApi(input) : await ingredientDrinkApi(input);
+        ? await ingredientFoodApi(myImputUnderline)
+        : await ingredientDrinkApi(myImputUnderline);
       break;
     case 'Name':
       ing = pathname === '/meals'
-        ? await nameFoodApi(input) : await nameDrinkApi(input);
+        ? await nameFoodApi(myImputUnderline)
+        : await nameDrinkApi(myImputUnderline);
       break;
     case 'First letter':
       if (input.length > 1) {
         return global.alert('Your search must have only 1 (one) character');
       }
       ing = pathname === '/meals'
-        ? await firstLetterFoodApi(input) : await firstLetterDrinkApi(input);
+        ? await firstLetterFoodApi(myImputUnderline)
+        : await firstLetterDrinkApi(myImputUnderline);
       break;
     default:
       break;
@@ -36,6 +60,7 @@ function SearchBar({ input, option, handleFilters, pathname, push }) {
 
     const auxIng = ing.meals || ing.drinks || [];
     if (auxIng.length === 1) {
+      // console.log(auxIng);
       return pathname === '/meals'
         ? push(`/meals/${auxIng[0].idMeal}`) : push(`/drinks/${auxIng[0].idDrink}`);
     }
@@ -48,42 +73,66 @@ function SearchBar({ input, option, handleFilters, pathname, push }) {
   };
 
   return (
-    <div>
-      <label htmlFor="ingredient">
-        Ingredient
-        <input
-          type="radio"
-          data-testid="ingredient-search-radio"
-          name="option"
-          checked={ option === 'Ingredient' }
-          value="Ingredient"
-          onChange={ handleFilters }
-        />
-      </label>
-      <label htmlFor="name">
-        Name
-        <input
-          type="radio"
-          data-testid="name-search-radio"
-          name="option"
-          checked={ option === 'Name' }
-          value="Name"
-          onChange={ handleFilters }
-        />
-      </label>
-      <label htmlFor="firstLetter">
-        First letter
-        <input
-          type="radio"
-          data-testid="first-letter-search-radio"
-          name="option"
-          checked={ option === 'First letter' }
-          value="First letter"
-          onChange={ handleFilters }
-        />
-      </label>
+    <div className="search">
+      <input
+        className="input-text"
+        type="text"
+        name="input"
+        id="input"
+        data-testid="search-input"
+        value={ input }
+        onChange={ handleFilters }
+      />
+      <div className="filters">
+        <label
+          className="filter"
+          htmlFor="Ingredient"
+        >
+          Ingredient
+          <input
+            type="radio"
+            id="Ingredient"
+            data-testid="ingredient-search-radio"
+            name="option"
+            checked={ option === 'Ingredient' }
+            value="Ingredient"
+            onChange={ handleFilters }
+          />
+        </label>
+        <label
+          className="filter"
+          htmlFor="Name"
+        >
+          Name
+          <input
+            type="radio"
+            id="Name"
+            data-testid="name-search-radio"
+            name="option"
+            checked={ option === 'Name' }
+            value="Name"
+            onChange={ handleFilters }
+          />
+        </label>
+        <label
+          className="filter"
+          htmlFor="First letter"
+        >
+          First letter
+          <input
+            type="radio"
+            id="First letter"
+            data-testid="first-letter-search-radio"
+            name="option"
+            checked={ option === 'First letter' }
+            value="First letter"
+            onChange={ handleFilters }
+          />
+        </label>
+      </div>
       <button
         type="button"
+        className="button"
         data-testid="exec-search-btn"
         onClick={ handleSearch }
       >

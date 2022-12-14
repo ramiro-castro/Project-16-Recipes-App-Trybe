@@ -1,31 +1,18 @@
-import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link, useHistory } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
-import SearchBar from './SearchBar';
 import headerLogo from '../images/headerLogo.svg';
 import './Header.css';
-
-const foodSearch = {
-  input: '',
-  option: '',
-};
+import { searchToggle } from '../redux/actions/userActions';
 
 function Header({
   search, profile,
   // children
 }) {
-  const [isSearch, setisSearch] = useState(false);
-  const [searchOptions, setSearchOptions] = useState(foodSearch);
-
-  const handleFilters = ({ target: { value, name } }) => {
-    setSearchOptions({ ...searchOptions, [name]: value });
-  };
-
-  const { input, option } = searchOptions;
-
   const history = useHistory();
+  const dispatch = useDispatch();
 
   return (
     <div className="header">
@@ -51,7 +38,7 @@ function Header({
 
             </button>
             {search && (
-              <button onClick={ () => setisSearch((prev) => !prev) } type="button">
+              <button onClick={ () => dispatch(searchToggle()) } type="button">
                 <img
                   data-testid="search-top-btn"
                   src={ searchIcon }
@@ -62,30 +49,6 @@ function Header({
           </div>
         </>
       )}
-      {
-        isSearch
-      && (
-        <div>
-          <label htmlFor="search">
-            <input
-              type="text"
-              name="input"
-              data-testid="search-input"
-              value={ input }
-              onChange={ handleFilters }
-            />
-          </label>
-          <SearchBar
-            push={ history.push }
-            input={ input }
-            pathname={ history.location.pathname }
-            option={ option }
-            handleFilters={ handleFilters }
-          />
-        </div>
-      )
-      }
-      {/* <p data-testid="page-title" className="title">{children}</p> */}
     </div>
   );
 }
