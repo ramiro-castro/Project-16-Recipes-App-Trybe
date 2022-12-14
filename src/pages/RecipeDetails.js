@@ -20,6 +20,8 @@ function RecipeDetails() {
   const [copied, setCopied] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [filterIngredients, setFilterIngredients] = useState([]);
+  const [filteredMeasures, setfilteredMeasures] = useState([]);
   const loadingTime = 1500;
 
   const getFavorites = () => {
@@ -94,6 +96,37 @@ function RecipeDetails() {
 
   const getMeasures = () => Object.entries(recipe)
     .filter((key) => key[0].includes('strMeasure')).map((ingredient) => ingredient[1]);
+
+  const sliceIngredients = () => {
+    const menosUm = -1;
+    const allIngredients = getIngredients();
+    const indexNull = allIngredients.indexOf(null);
+    const indexStrgVazia = allIngredients.indexOf('');
+    if (indexNull !== menosUm && indexStrgVazia !== menosUm) {
+      const aux = allIngredients.slice(0, indexNull);
+      return aux.slice(0, indexStrgVazia);
+    }
+    if (indexStrgVazia !== menosUm) {
+      return allIngredients.slice(0, indexStrgVazia);
+    }
+    return allIngredients.slice(0, indexNull);
+  };
+
+  const removeNull = () => {
+    if (isLoading !== true) {
+      console.log(recipe);
+      const allMeasures = getMeasures();
+      const indexNullMeasures = allMeasures.indexOf(null);
+      setfilteredMeasures(allMeasures.slice(0, indexNullMeasures));
+
+      const auxSetfilIngredient = sliceIngredients();
+      setFilterIngredients(auxSetfilIngredient);
+    }
+  };
+
+  useEffect(() => {
+    removeNull();
+  }, [isLoading]);
 
   const handleShare = () => {
     copy(`http://localhost:3000${history.location.pathname}`);
@@ -180,10 +213,12 @@ function RecipeDetails() {
             category={ category }
             recomendations={ recomendations }
           />}
-          {getIngredients().map((ingredient, index) => (
+          {filterIngredients.map((ingredient, index) => (
             <div key={ index }>
               <p data-testid={ `${index}-ingredient-name-and-measure` }>
-                {`${ingredient} ${getMeasures()[index]}`}
+                {`${ingredient} ${filteredMeasures[index] !== undefined
+                  ? filteredMeasures[index]
+                  : ''}`}
               </p>
             </div>
           ))}
