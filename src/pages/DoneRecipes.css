@@ -11,6 +11,10 @@
     color: black;
 }
 
+.done-recipes p {
+    margin-bottom: 0;
+}
+
 .title {
     display: flex;
     align-items: center;
@@ -30,11 +34,17 @@
     gap: 1rem;
     flex-direction: column;
     width: 80%;
+    margin-bottom: 8vh;
 }
 
 .recipe-card{
-    background-color: white;
+    background-color: #F2D895;
     display: flex;
+    position: relative;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    max-height: 11rem;
+    padding-inline-end: 0.8rem;
 }
 
 .details-food {
@@ -43,4 +53,43 @@
 
 .image-recipe {
     width: 50%;
+}
+
+.share-btn {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+}
+
+.share-btn img {
+    width: 1.8rem;
+}
+
+.name-food {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.title-food {
+    color:#46484b;
+}
+
+.done-date {
+    font-size: 0.7rem;
+}
+
+.tag-container {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+}
+
+.tag-food {
+    font-size: 0.7rem;
+    background-color: var(--main-primary-color);
+    display: flex;
+    justify-content: center;
+    height: 1rem;
+    border-radius: 0.5rem;
+    padding-inline: 0.3rem;
 }

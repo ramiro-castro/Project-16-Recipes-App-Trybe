@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import shareIcon from '../images/shareIcon.svg';
+import Share from '../images/Share.svg';
 
 const copy = require('clipboard-copy');
 
@@ -23,7 +23,7 @@ function ShareButton({ testId, recipe }) {
         type="button"
         onClick={ handleShare }
       >
-        <img data-testid={ testId } src={ shareIcon } alt="shareIcon.svg" />
+        <img data-testid={ testId } src={ Share } alt="Share.svg" />
       </button>
       {copied
       && <p>Link copied!</p>}
