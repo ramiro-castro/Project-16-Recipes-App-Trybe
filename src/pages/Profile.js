@@ -6,6 +6,7 @@ import Loading from '../components/Loading';
 import doneIcon from '../images/doneIcon.svg';
 import favoriteIcon from '../images/favoriteProfileIcon.svg';
 import logoutIcon from '../images/logoutIcon.svg';
+import profileIcon from '../images/profileIcon.svg';
 import './Profile.css';
 
 function Profile() {
@@ -28,6 +29,8 @@ function Profile() {
   return (
     <div className="profile">
       <Header profile>Profile</Header>
+      <img className="profile-icon" src={ profileIcon } alt="Profile icon" />
+      <h2>PROFILE</h2>
       <p className="email" data-testid="profile-email">{emailStorage}</p>
       <button
         className="link-container"

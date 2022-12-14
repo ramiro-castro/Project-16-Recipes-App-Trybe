@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import Carrousel from '../components/Carrousel';
+import './RecipeDetails.css';
+import shareIconGreen from '../images/shareIconGreen.svg';
+import Loading from '../components/Loading';
 
 const copy = require('clipboard-copy');
 
@@ -17,6 +19,8 @@ function RecipeDetails() {
   const [inProgressRecipes, setInprogressRecipes] = useState([]);
   const [copied, setCopied] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const loadingTime = 1500;
 
   const getFavorites = () => {
     const data = localStorage.getItem('favoriteRecipes') || [];
@@ -65,24 +69,7 @@ function RecipeDetails() {
     getDoneRecipes();
     getInProgressReipes();
     getFavorites();
-    // const inProgressRecipes = {
-    //   meals: {
-    //     52771: [],
-    //   },
-    // };
-    // localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
-    // const doneRecipessave = [{
-    //   id: '52771',
-    //   type: 'meal',
-    //   nationality: 'Italian',
-    //   category: 'Vegetarian',
-    //   alcoholicOrNot: '',
-    //   name: 'Spicy Arrabiata Penne',
-    //   image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-    //   doneDate: '22/6/2020',
-    //   tags: ['Pasta', 'Curry'],
-    // }];
-    // localStorage.setItem('doneRecipes', JSON.stringify(doneRecipessave));
+    setTimeout(() => setIsLoading(false), loadingTime);
   }, []);
 
   const isDone = () => {
@@ -134,39 +121,54 @@ function RecipeDetails() {
     localStorage.setItem('favoriteRecipes', JSON.stringify(favorites));
   }, [favorites]);
 
+  if (isLoading) {
+    return (
+      <Loading />
+    );
+  }
+
   return (
-    <div>
-      <button
-        data-testid="share-btn"
-        type="button"
-        onClick={ handleShare }
-      >
-        <img src={ shareIcon } alt="shareIcon.svg" />
-      </button>
-      <button
-        type="button"
-        onClick={ handleFavorite }
-      >
-        <img
-          data-testid="favorite-btn"
-          src={ isFavorite()
-            ? blackHeartIcon : whiteHeartIcon }
-          alt="favorite icon"
-        />
-      </button>
-      {copied && <p>Link copied!</p>}
+    <div className="details">
       {recipe && (
         <div>
-          {category !== 'Drink'
-            ? <p data-testid="recipe-category">{recipe.strCategory}</p>
-            : <p data-testid="recipe-category">{recipe.strAlcoholic}</p>}
-          <p data-testid="recipe-title">{recipe[`str${category}`]}</p>
-          <img
-            width="150px"
-            data-testid="recipe-photo"
-            src={ recipe[`str${category}Thumb`] }
-            alt="recipe img"
-          />
+          <div className="details-header">
+            <img
+              className="thumb"
+              data-testid="recipe-photo"
+              src={ recipe[`str${category}Thumb`] }
+              alt="recipe img"
+            />
+            <div className="header-content">
+              <div className="row">
+                {category !== 'Drink'
+                  ? <p data-testid="recipe-category">{recipe.strCategory}</p>
+                  : <p data-testid="recipe-category">{recipe.strAlcoholic}</p>}
+                <div className="spacer" />
+                <div className="buttons-container">
+                  <button
+                    data-testid="share-btn"
+                    type="button"
+                    onClick={ handleShare }
+                  >
+                    <img src={ shareIconGreen } alt="shareIcon.svg" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={ handleFavorite }
+                  >
+                    <img
+                      data-testid="favorite-btn"
+                      src={ isFavorite()
+                        ? blackHeartIcon : whiteHeartIcon }
+                      alt="favorite icon"
+                    />
+                  </button>
+                  {copied && <p>Link copied!</p>}
+                </div>
+              </div>
+            </div>
+            <p className="recipe-title" data-testid="recipe-title">{recipe[`str${category}`]}</p>
+          </div>
           { category !== 'Drink' && <iframe
             data-testid="video"
             src={ `https://www.youtube.com/embed/${getVideoId()}` }
