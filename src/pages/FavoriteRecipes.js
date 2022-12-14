@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import ShareButton from '../components/ShareButton';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
+import Loading from '../components/Loading';
 
 function FavoriteRecipes() {
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
   const [filtredRecipes, setFiltredRecipes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const loadingTime = 1500;
 
   const getfavoriteRecipes = () => {
     const data = localStorage.getItem('favoriteRecipes') || [];
@@ -30,6 +33,7 @@ function FavoriteRecipes() {
   useEffect(() => {
     getfavoriteRecipes();
     setFiltredRecipes(favoriteRecipes);
+    setTimeout(() => setIsLoading(false), loadingTime);
   }, []);
 
   const handleFavorite = (recipe) => {
@@ -40,6 +44,13 @@ function FavoriteRecipes() {
     setFiltredRecipes(favoriteRecipes);
     localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
   }, [favoriteRecipes]);
+
+  if (isLoading) {
+    return (
+      <Loading />
+    );
+  }
+
   return (
     <div>
       <Header profile>Favorite Recipes</Header>
