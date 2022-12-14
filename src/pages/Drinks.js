@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import RecipeCard from '../components/RecipeCard';
 import Recipes from '../components/Recipes';
 
-function Drinks({ history }) {
+function Drinks() {
   const recipes = useSelector((state) => state.recipesReducer.recipes);
   // console.log(recipes);
 
@@ -14,6 +14,8 @@ function Drinks({ history }) {
 
   }, [recipes]);
   const validation = () => recipes.length !== 0;
+  const history = useHistory();
+
   return (
     <div>
       <Header profile search>Drinks</Header>
@@ -28,9 +30,5 @@ function Drinks({ history }) {
     </div>
   );
 }
-
-Drinks.propTypes = {
-  history: PropTypes.shape({}).isRequired,
-};
 
 export default Drinks;

@@ -5,8 +5,6 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import './RecipeInProgress.css';
 
-const copy = require('clipboard-copy');
-
 function RecipeInProgress() {
   const history = useHistory();
   const match = useRouteMatch();
@@ -14,6 +12,7 @@ function RecipeInProgress() {
   const [category, setCategory] = useState('');
   const [checked, setChecked] = useState([]);
   const [filterIngredients, setFilterIngredients] = useState([]);
+  const [filteredMeasures, setfilteredMeasures] = useState([]);
   const [btnDisable, setBtnDisable] = useState(true);
   const [copied, setCopied] = useState(false);
   const [favorites, setFavorites] = useState([]);
@@ -26,7 +25,7 @@ function RecipeInProgress() {
     }
   };
 
-  const getDoneRecipes = () => {
+  const getDoneRecipes = () => { // verifica se tem informacoes no localStorage, caso tenha, elas serao salvas no array doneRecipes (linha 20)
     const data = localStorage.getItem('doneRecipes') || [];
     if (data.length) {
       setDoneRecipes(JSON.parse(data));
@@ -57,8 +56,6 @@ function RecipeInProgress() {
     }
   };
 
-  console.log(recipe);
-
   const getIngredients = () => (Object.entries(recipe)
     .filter((key) => key[0].includes('strIngredient'))
     .map((ingredient) => ingredient[1]));
@@ -66,23 +63,39 @@ function RecipeInProgress() {
   const getMeasures = () => Object.entries(recipe)
     .filter((key) => key[0].includes('strMeasure')).map((ingredient) => ingredient[1]);
 
+  const sliceIngredients = () => {
+    const menosUm = -1;
+    const allIngredients = getIngredients();
+    const indexNull = allIngredients.indexOf(null);
+    const indexStrgVazia = allIngredients.indexOf('');
+    if (indexNull !== menosUm && indexStrgVazia !== menosUm) {
+      const aux = allIngredients.slice(0, indexNull);
+      return aux.slice(0, indexStrgVazia);
+    }
+    if (indexStrgVazia !== menosUm) {
+      return allIngredients.slice(0, indexStrgVazia);
+    }
+    return allIngredients.slice(0, indexNull);
+  };
+
   const removeNull = () => {
     if (recipe.length !== 0) {
-      const allIngredients = getIngredients();
-      console.log(allIngredients);
-      const indexNull = allIngredients.indexOf('');
+      console.log(recipe);
+      const allMeasures = getMeasures();
+      const indexNullMeasures = allMeasures.indexOf(null);
+      setfilteredMeasures(allMeasures.slice(0, indexNullMeasures));
+
+      const auxSetfilIngredient = sliceIngredients();
+      setFilterIngredients(auxSetfilIngredient);
 
       const getItem = JSON.parse(localStorage.getItem('inProgressRecipes')) || [];
-      console.log(getItem);
       let createArr = [];
       if (getItem.length !== 0) {
         createArr = getItem;
       } else {
-        createArr = allIngredients.slice(0, indexNull).map(() => false);
+        createArr = auxSetfilIngredient.map(() => false);
       }
-      console.log(createArr);
       setChecked(createArr);
-      setFilterIngredients(allIngredients.slice(0, indexNull));
     }
   };
 
@@ -91,28 +104,31 @@ function RecipeInProgress() {
   }, [recipe]);
 
   // https://www.freecodecamp.org/news/how-to-work-with-multiple-checkboxes-in-react/
-
   const handleFilters = (position) => {
-    console.log(checked);
-    console.log(position);
     const updatedCheckedState = checked
       .map((item, index) => (index === position ? !item : item));
     setChecked(updatedCheckedState);
-    console.log(updatedCheckedState);
     const verifyBtn = updatedCheckedState.every((el) => el === true);
-    console.log(verifyBtn);
     localStorage.setItem('inProgressRecipes', JSON.stringify(updatedCheckedState));
     const teste = verifyBtn === false;
     setBtnDisable(teste);
-    console.log(btnDisable);
+  };
+
+  // https://stackoverflow.com/questions/71873824/copy-text-to-clipboard-cannot-read-properties-of-undefined-reading-writetext
+  const copyToClipboard = async (input) => {
+    try {
+      await navigator.clipboard.writeText(input);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleShare = () => {
     if (history.location.pathname.includes('meals')) {
-      copy(`http://localhost:3000/meals/${match.params.id}`);
+      copyToClipboard(`http://localhost:3000/meals/${match.params.id}`);
       setCopied(true);
     } else {
-      copy(`http://localhost:3000/drinks/${match.params.id}`);
+      copyToClipboard(`http://localhost:3000/drinks/${match.params.id}`);
       setCopied(true);
     }
   };
@@ -145,16 +161,14 @@ function RecipeInProgress() {
       id: recipe[[`id${category}`]],
       type: `${category.toLowerCase()}`,
       nationality: recipe.strArea || '',
-      category: recipe.strCategory || '',
+      category: recipe.strCategory,
       alcoholicOrNot: recipe.strAlcoholic || '',
       name: recipe[`str${category}`],
       image: recipe[`str${category}Thumb`],
-      tags: category.toLowerCase() === 'meal' ? recipe.strTags.split(',') || [] : [],
+      tags: recipe.strTags !== null ? recipe.strTags.split(',') : [],
       doneDate: new Date(),
     };
-
-    console.log(recipe.type);
-
+    console.log(recipeToSave);
     localStorage.setItem('doneRecipes', JSON.stringify([...doneRecipes, recipeToSave]));
     history.push('/done-recipes');
   };
@@ -207,7 +221,9 @@ function RecipeInProgress() {
                   checked={ checked[index] }
                   onChange={ () => handleFilters(index) }
                 />
-                {`${ingredient} ${getMeasures()[index]}`}
+                {`${ingredient} ${filteredMeasures[index] !== undefined
+                  ? filteredMeasures[index]
+                  : ''}`}
               </label>
             </div>
           ))}

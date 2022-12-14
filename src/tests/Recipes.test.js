@@ -82,7 +82,7 @@ describe('Testa o funcionamento da tela de Recipes', () => {
     const shake = await screen.findByRole('button', { name: /shake/i });
     expect(shake).toBeInTheDocument();
 
-    const other = await screen.findByRole('button', { name: 'Other/Unknown' });
+    const other = await screen.findByRole('button', { name: 'Other / Unknown' });
     expect(other).toBeInTheDocument();
 
     const cocoa = await screen.findByRole('button', { name: /cocoa/i });
