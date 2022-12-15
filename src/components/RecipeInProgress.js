@@ -1,3 +1,6 @@
+/* eslint-disable max-lines */
+/* eslint-disable react/jsx-max-depth */
+/* eslint-disable max-len */
 import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import shareIconGreen from '../images/shareIconGreen.svg';

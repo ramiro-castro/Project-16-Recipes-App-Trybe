@@ -1,3 +1,15 @@
+/* stylelint-disable comment-empty-line-before */
+/* stylelint-disable font-family-name-quotes */
+/* stylelint-disable no-missing-end-of-source-newline */
+/* stylelint-disable order/properties-alphabetical-order */
+/* stylelint-disable font-family-no-missing-generic-family-keyword */
+
+/* stylelint-disable no-duplicate-selectors */
+/* stylelint-disable rule-empty-line-before */
+/* stylelint-disable no-eol-whitespace */
+/* stylelint-disable indentation */
+
+
 .decoration {
   text-decoration: line-through solid black;
 }
