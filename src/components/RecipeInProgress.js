@@ -175,6 +175,7 @@ function RecipeInProgress() {
       tags: recipe.strTags !== null ? recipe.strTags.split(',') : [],
       doneDate: formatDate(),
     };
+    localStorage.setItem('inProgressRecipes', JSON.stringify([]));
     console.log(recipeToSave);
     localStorage.setItem('doneRecipes', JSON.stringify([...doneRecipes, recipeToSave]));
     history.push('/done-recipes');
