@@ -165,7 +165,7 @@ function RecipeDetails() {
   return (
     <div className="details">
       {recipe && (
-        <div>
+        <>
           <div className="details-header">
             <img
               className="thumb"
@@ -176,8 +176,8 @@ function RecipeDetails() {
             <div className="header-content">
               <div className="row">
                 {category !== 'Drink'
-                  ? <p data-testid="recipe-category">{recipe.strCategory}</p>
-                  : <p data-testid="recipe-category">{recipe.strAlcoholic}</p>}
+                  ? <p className="category" data-testid="recipe-category">{recipe.strCategory}</p>
+                  : <p className="category" data-testid="recipe-category">{recipe.strAlcoholic}</p>}
                 <div className="spacer" />
                 <div className="buttons-container">
                   <button
@@ -202,51 +202,66 @@ function RecipeDetails() {
                 </div>
               </div>
             </div>
-            <p className="recipe-title" data-testid="recipe-title">{recipe[`str${category}`]}</p>
+            <p className="recipe-titles" data-testid="recipe-title">{recipe[`str${category}`]}</p>
           </div>
-          { category !== 'Drink' && <iframe
-            data-testid="video"
-            src={ `https://www.youtube.com/embed/${getVideoId()}` }
-            title="recipe video"
-          />}
-          {recomendations && <Carrousel
-            category={ category }
-            recomendations={ recomendations }
-          />}
-          {filterIngredients.map((ingredient, index) => (
-            <div key={ index }>
-              <p data-testid={ `${index}-ingredient-name-and-measure` }>
-                {`${ingredient} ${filteredMeasures[index] !== undefined
-                  ? filteredMeasures[index]
-                  : ''}`}
-              </p>
+
+          <div className="content">
+            <h2 className="sub-title">Ingredients</h2>
+            <div className="ingredients-card text-card">
+              {filterIngredients.map((ingredient, index) => (
+                <ul key={ index }>
+                  <li data-testid={ `${index}-ingredient-name-and-measure` }>
+                    {`${ingredient} ${filteredMeasures[index] !== undefined
+                      ? filteredMeasures[index]
+                      : ''}`}
+                  </li>
+                </ul>
+              ))}
             </div>
-          ))}
-          <p data-testid="instructions">{recipe.strInstructions}</p>
-          {console.log(isDone())}
-          { !isDone() && (
-            <button
-              className="start-btn"
-              type="button"
-              data-testid="start-recipe-btn"
-              onClick={ () => history
-                .push(`/${category.toLowerCase()}s/${match.params.id}/in-progress`) }
-            >
-              Start Recipe
-            </button>
-          )}
-          {isInProgress() && (
-            <button
-              className="start-btn"
-              type="button"
-              data-testid="start-recipe-btn"
-              onClick={ () => history
-                .push(`/${category.toLowerCase()}s/${match.params.id}/in-progress`) }
-            >
-              Continue Recipe
-            </button>
-          )}
-        </div>
+
+            <h2 className="sub-title">Instructions</h2>
+            <div className="text-card">
+              <p data-testid="instructions">{recipe.strInstructions}</p>
+            </div>
+
+            <h2 className="sub-title">Video</h2>
+            { category !== 'Drink' && <iframe
+              className="video"
+              data-testid="video"
+              src={ `https://www.youtube.com/embed/${getVideoId()}` }
+              title="recipe video"
+            />}
+
+            <h2 className="sub-title">Recommended</h2>
+            {recomendations && <Carrousel
+              category={ category }
+              recomendations={ recomendations }
+            />}
+
+            { !isDone() && (
+              <button
+                className="button"
+                type="button"
+                data-testid="start-recipe-btn"
+                onClick={ () => history
+                  .push(`/${category.toLowerCase()}s/${match.params.id}/in-progress`) }
+              >
+                Start Recipe
+              </button>
+            )}
+            {isInProgress() && (
+              <button
+                className="button"
+                type="button"
+                data-testid="start-recipe-btn"
+                onClick={ () => history
+                  .push(`/${category.toLowerCase()}s/${match.params.id}/in-progress`) }
+              >
+                Continue Recipe
+              </button>
+            )}
+          </div>
+        </>
       )}
     </div>
   );

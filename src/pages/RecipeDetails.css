@@ -1,39 +1,80 @@
-.details .details-header {
-  width: 100vw;
-  height: 20vh;
-  display: flex;
-  flex-direction: column;
-  background-color: blue;
-  font-size: 20px;
-  font-family: 'Epilogue';
-  font-weight: 700;
-  color: var(--main-primary-color-light);
-}
-
-.details .thumb {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  overflow: hidden;
-  position: relative;
-}
-
-.details .recipe-title {
-  position: absolute;
-  text-align: center;
-  margin-top: 4rem;
-  width: 100%;
-  z-index: 2;
-}
-
-.details .header-content {
-  display: flex;
-  top: 0;
-  position: absolute;
-  z-index: 2;
-}
-
-.details .row {
-  display: flex;
-  width: 100vw;
-}
+.details {
+	font-family: 'Epilogue';
+	overflow: hidden;
+	max-width: 100vw;
+	min-height: 200vh;
+  }
+  
+  .content {
+	margin: auto;
+	width: 90vw;
+  }
+  
+  .details-header {
+	height: 20vh;
+	display: flex;
+	width: 100vw;
+	flex-direction: column;
+	font-size: 20px;
+	font-weight: 700;
+	color: var(--logo-color);
+  }
+  
+  .thumb {
+	overflow: hidden;
+	object-fit: cover;
+	position: relative;
+	filter: blur(3px) brightness(55%);
+  }
+  
+  .buttons-container {
+	position: absolute;
+	width: 100%;
+	top: 1rem;
+	left: 80%;
+  }
+  
+  .header-content {
+	display: flex;
+	top: 0;
+	position: absolute;
+	z-index: 2;
+  }
+  
+  .row {
+	display: flex;
+	width: 100vw;
+  }
+  
+  .category {
+	position: absolute;
+	top: 1rem;
+	left: 1rem;
+  }
+  
+  .details .video {
+	width: 100%;
+  }
+  
+  .details p {
+	margin: 0;
+  }
+  
+  .text-card {
+	border-radius: var(--border-radius);
+	padding: 1rem;
+	width: 100%;
+	margin: auto;
+	background-color: var(--main-primary-color-light);
+  }
+  
+  .sub-title {
+	font-weight: 700;
+	color: var(--main-primary-color-light);
+	margin-top: 2rem;
+  }
+  
+  .details .button {
+	margin-block: 2rem;
+	width: 100%;
+  }
