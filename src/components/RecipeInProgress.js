@@ -162,7 +162,8 @@ function RecipeInProgress() {
     return today.toLocaleDateString('pt-BR', options);
   };
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault();
     const recipeToSave = {
       id: recipe[[`id${category}`]],
       type: `${category.toLowerCase()}`,
@@ -171,7 +172,7 @@ function RecipeInProgress() {
       alcoholicOrNot: recipe.strAlcoholic || '',
       name: recipe[`str${category}`],
       image: recipe[`str${category}Thumb`],
-      tags: category.toLowerCase() === 'meal' ? recipe.strTags.split(',') || [] : [],
+      tags: recipe.strTags !== null ? recipe.strTags.split(',') : [],
       doneDate: formatDate(),
     };
     console.log(recipeToSave);
