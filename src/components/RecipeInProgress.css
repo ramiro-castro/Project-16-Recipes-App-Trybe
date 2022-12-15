@@ -1,3 +1,38 @@
 .decoration {
   text-decoration: line-through solid black;
 }
+.decoration {
+	text-decoration: line-through solid black;
+  }
+  
+  .in-progress {
+	font-family: 'Epilogue';
+	min-height: 200vh;
+  }
+  
+  .in-progress .category {
+	position: absolute;
+	top: 1rem;
+	left: 1rem;
+  }
+  
+  .recipe-titles {
+	position: absolute;
+	text-align: center;
+	width: 100%;
+	font-weight: 700;
+	top: 4rem;
+	z-index: 2;
+  }
+  
+  .in-progress .content {
+	margin-block: 3rem;
+	display: flex;
+	flex-direction: column;
+	gap: 3rem;
+  }
+  
+  .checkbox input {
+	transform: scale(150%);
+	margin-right: 1rem;
+  }
