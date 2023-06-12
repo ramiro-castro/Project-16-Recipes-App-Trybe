@@ -1,6 +1,6 @@
 # Recipes App
 
-- O projeto consistiu em desenvolver um sistema que permitisse visualizar, buscar, filtrar, favoritar, compartilhar e acompanhar o processo de preparação de receitas e drinks.
+- O projeto consistiu em desenvolver um sistema que permitisse visualizar, buscar, filtrar, favoritar, compartilhar e acompanhar o processo de preparação de comidas e drinks.
 
 - Desenvolvemos o app de receitas em grupo, sendo que este deveria se conectar não somente a uma, mas a duas 2 API’s ao mesmo tempo!
 
