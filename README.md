@@ -11,9 +11,9 @@
 ## Atribuições de cada participante
 - Durante este trabalho utilizamos o trello para organizarmos os requisitos e dividirmos as tarefas. Você pode checar o nosso quadro de organização <a href="https://trello.com/b/KHor1XS7/recippes-app-12b-complete" target="_blank">clicando aqui</a>;
 
-- O Josiel Costa, por ser um programador mais experiente, contriuiu bastante para tirar duvidas, a nos aconselhar a organizar o código em funções para evitar erros e a programar o CSS. Além disso, o Josiel foi extremamente produtivo, dando um andamento ímpar para que todos concluíssemos o trabalho em tempo recorde;
+- O Josiel Costa, por ser um programador mais experiente, contriuiu bastante para tirar duvidas, a nos aconselhar a organizar o código em funções para evitar erros e a programar o CSS. Além disso, o Josiel foi extremamente produtivo, dando um andamento ímpar para que todos concluíssemos o trabalho em tempo recorde, já que seu pensamento computacional permitiu a finalização de diversos requisitos do aplicativo;
 
-- O Thiago Omoto desenvolveu parte do CSS, parte do código, sendo que ora programava com o Josiel e comigo, ora soziho;
+- O Thiago Omoto desenvolveu parte do CSS, parte do código, sendo que ora programava com o Josiel e comigo, ora soziho. Bastante empático, dedicado e proativo, o Thiago desempenhou importante papel para a conclusão do trabalho se empenhando  no processo de desenvolvimento, especialmente nos momentos de live codings, compartilhando sua tela e ajudando no desenvolvimento de diversos requisitos do aplicativo.  
 
 - O Igor criou funções importantes no trabalho, ajudou a mim e ao Thiago quando tivemos duvidas na implemenentação do Context API e trouxe duvidas importantes sobre o uso do git, que nos ajudaram a aperfeiçoar ainda mais o uso dessa tecnologia tão necessária;
 
